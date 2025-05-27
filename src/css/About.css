@@ -1,0 +1,271 @@
+/* src/css/About.css */
+
+.about-page-container {
+  /* This container might be useful if you need an overall background,
+     but for this design, the sections manage their own backgrounds. */
+  background-color: #2c2c2c; /* A darker background for the whole page */
+  color: #f0f0f0; /* Default text color */
+  font-family: Arial, sans-serif; /* Example font */
+}
+
+/* 1. Hero Section (Blue Background with Image) */
+.about-hero-section {
+  background-color: #3b74b9; /* A blue color similar to the example image */
+  background-image: var(--about-bg-image); /* Use the CSS variable for the background image */
+  background-size: cover; /* Cover the entire area */
+  background-position: center center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat */
+  height: 400px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Needed for overlay positioning */
+  padding: 20px; /* Some padding for text */
+}
+
+.hero-overlay {
+  background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 3.5em; /* Large impactful title */
+  color: #fff; /* White text */
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  max-width: 900px; /* Limit width for readability */
+}
+
+.hero-subtitle {
+  font-size: 1.5em; /* Subtitle text */
+  color: #e0e0e0;
+  max-width: 700px;
+  line-height: 1.4;
+}
+
+/* 2. Feature Blocks Section (Top - directly below hero) */
+.about-features-top {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center;
+  gap: 30px; /* Space between blocks */
+  padding: 60px 40px; /* Vertical and horizontal padding */
+  background-color: #fff; /* White background for this section */
+  color: #333; /* Darker text for white background */
+}
+
+.feature-block {
+  flex: 1; /* Allows blocks to grow and shrink */
+  min-width: 280px; /* Minimum width before wrapping */
+  max-width: 350px; /* Max width to prevent them from becoming too wide */
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #f8f8f8; /* Slightly off-white for blocks */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.feature-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 3em; /* Size of the icon */
+  color: #3b74b9; /* Blue color for icons */
+  margin-bottom: 15px;
+}
+
+.feature-block h3 {
+  font-size: 1.8em;
+  color: #3b74b9; /* Blue color for headings */
+  margin-bottom: 10px;
+}
+
+.feature-block p {
+  font-size: 1.1em;
+  line-height: 1.5;
+  color: #555;
+}
+
+
+/* 3. Main Content Area (Image and Text) */
+.about-main-content {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
+  align-items: center; /* Vertically align content */
+  justify-content: center;
+  padding: 80px 40px;
+  background-color: #2c2c2c; /* Dark background */
+  color: #f0f0f0;
+}
+
+.main-content-image {
+  flex: 1;
+  min-width: 300px; /* Minimum width for image */
+  max-width: 500px; /* Max width for image */
+  margin: 0 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.main-content-image img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+}
+
+.main-content-text {
+  flex: 2; /* Text takes more space */
+  min-width: 300px;
+  max-width: 600px;
+  margin: 0 30px;
+  text-align: left;
+}
+
+.main-content-text h2 {
+  font-size: 2.8em;
+  color: #FFD700; /* Gold heading */
+  margin-bottom: 20px;
+}
+
+.main-content-text p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* 4. Feature Blocks Section (Bottom - Yellow Background) */
+.about-features-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px 40px;
+  background-color: #FFD700; /* Yellow background */
+  color: #333; /* Dark text for yellow background */
+}
+
+/* Feature blocks within the yellow section will use the same .feature-block styles,
+   but their background color and text color might need to be adjusted if different.
+   For now, we'll keep them consistent, but if you want specific styling for these,
+   you'd create a new class like '.feature-block-yellow-section'. */
+/* Example:
+.about-features-bottom .feature-block {
+    background-color: #fcf8e3; // Lighter yellow
+}
+.about-features-bottom .feature-block h3,
+.about-features-bottom .feature-block .feature-icon {
+    color: #a07a00; // Darker gold
+}
+*/
+
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .about-hero-section {
+    height: 350px;
+  }
+  .hero-title {
+    font-size: 3em;
+  }
+  .hero-subtitle {
+    font-size: 1.3em;
+  }
+  .about-features-top,
+  .about-main-content,
+  .about-features-bottom {
+    padding: 50px 30px;
+  }
+  .main-content-image,
+  .main-content-text {
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero-section {
+    height: 300px;
+  }
+  .hero-title {
+    font-size: 2.5em;
+  }
+  .hero-subtitle {
+    font-size: 1.1em;
+  }
+  .about-features-top {
+    flex-direction: column; /* Stack blocks vertically */
+    align-items: center;
+    padding: 40px 20px;
+  }
+  .feature-block {
+    max-width: 400px; /* Allow wider single column blocks */
+    margin-bottom: 20px; /* Space between stacked blocks */
+  }
+
+  .about-main-content {
+    flex-direction: column; /* Stack image and text vertically */
+    padding: 40px 20px;
+  }
+  .main-content-image,
+  .main-content-text {
+    margin: 0; /* Remove horizontal margin when stacked */
+    max-width: 100%; /* Take full width */
+    width: 100%; /* Ensure full width */
+  }
+  .main-content-image {
+    margin-bottom: 30px; /* Space below image when stacked */
+  }
+  .main-content-text {
+    text-align: center; /* Center text when stacked */
+  }
+  .main-content-text h2 {
+    font-size: 2.2em;
+  }
+  .main-content-text p {
+    font-size: 1em;
+  }
+  .about-features-bottom {
+    flex-direction: column; /* Stack blocks vertically */
+    align-items: center;
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero-section {
+    height: 250px;
+  }
+  .hero-title {
+    font-size: 1.8em;
+  }
+  .hero-subtitle {
+    font-size: 0.9em;
+  }
+  .about-features-top,
+  .about-main-content,
+  .about-features-bottom {
+    padding: 30px 15px;
+  }
+  .feature-block {
+    padding: 20px;
+  }
+  .feature-icon {
+    font-size: 2.5em;
+  }
+  .feature-block h3 {
+    font-size: 1.5em;
+  }
+}

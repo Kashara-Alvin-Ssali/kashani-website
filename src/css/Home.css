@@ -1,0 +1,284 @@
+/* src/styles/Home.css */
+.home-container {
+  /* Use the CSS variable defined in Home.js for the background image */
+  background-image: var(--home-bg-image); /* <--- UPDATED LINE */
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center center; /* Centers the image */
+  background-attachment: fixed; /* Makes the background fixed while content scrolls (optional, but often looks good) */
+  min-height: 100vh; /* Ensure it takes full viewport height, especially if content is short */
+  padding: 0; /* Remove default padding here, sections will manage it */
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  /* Use a strong, possibly slightly transparent, dark background for the hero
+     to ensure text readability over the overall page background image. */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.9));
+  color: #FFD700; /* Yellow text on hero */
+  padding: 120px 20px; /* More vertical padding for impact */
+  text-align: center;
+  margin-bottom: 50px; /* Space below hero */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px; /* Minimum height for hero */
+}
+
+/* This ::before pseudo-element creates an additional overlay
+   which is useful if your background image is too bright even with the hero's background.
+   Adjust its rgba value as needed. */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Slightly darker overlay */
+  z-index: 1; /* Ensure this is behind hero-content but above the main background */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2; /* Ensure content is above the overlay */
+  max-width: 800px;
+}
+
+.hero-section h1 {
+  font-size: 4.5em; /* Larger, more impactful heading */
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+}
+
+.hero-section p {
+  font-size: 1.5em;
+  margin-bottom: 40px;
+  color: #FFD700; /* Ensure this is yellow */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.cta-button {
+  background-color: #FFD700; /* Yellow background */
+  color: #1a1a1a; /* Dark text for button */
+  padding: 18px 40px; /* Larger button */
+  border: none;
+  border-radius: 5px;
+  font-size: 1.4em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block; /* Essential for padding/margins on anchor tags */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button:hover {
+  background-color: #FFEA00; /* Slightly lighter yellow on hover */
+  transform: translateY(-3px); /* Lift effect */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.cta-button.secondary-button {
+  background-color: transparent;
+  color: #FFD700;
+  border: 2px solid #FFD700;
+  margin-top: 20px;
+}
+
+.cta-button.secondary-button:hover {
+  background-color: #FFD700;
+  color: #1a1a1a;
+}
+
+
+/* General Section Styling */
+.highlights-section,
+.standings-overview-section,
+.social-feed-section {
+  max-width: 1200px; /* Keep content within this width */
+  margin: 50px auto; /* Center sections and add vertical spacing */
+  padding: 40px;
+  /* Use rgba for section backgrounds so the overall home-container background image
+     can subtly show through. Adjust opacity (last value) as desired. */
+  background-color: rgba(33, 33, 33, 0.95); /* Slightly transparent dark background */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  color: #f0f0f0; /* Ensure text inside is light */
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-header h2 {
+  font-size: 2.8em;
+  margin-bottom: 10px;
+  color: #FFD700;
+}
+
+.section-header p {
+  font-size: 1.2em;
+  color: #CCCCCC; /* Lighter grey for descriptive text */
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Highlight Grid (for news, upcoming, spotlight cards) */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 30px; /* Space between cards */
+  margin-bottom: 40px;
+}
+
+.highlight-card {
+  background-color: rgba(43, 43, 43, 0.95); /* Slightly lighter semi-transparent dark for cards */
+  border-radius: 8px;
+  overflow: hidden; /* Ensures image corners are rounded */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.highlight-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px; /* Fixed height for consistent card appearance */
+  object-fit: cover; /* Cover the area, cropping if necessary */
+  display: block;
+}
+
+.card-content {
+  padding: 20px;
+  color: #f0f0f0; /* Default light text for card content */
+}
+
+.card-content h3 {
+  font-size: 1.5em;
+  color: #FFD700;
+  margin-bottom: 10px;
+}
+
+.card-content p {
+  font-size: 0.95em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #DDDDDD; /* Lighter grey for card paragraph text */
+}
+
+.card-link {
+  display: inline-block;
+  color: #FFD700;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+  color: #FFEA00;
+}
+
+/* Standings Table Specific */
+.standings-table-container {
+  text-align: center; /* Center the table if it's smaller than parent */
+}
+
+.standings-table-container table {
+  width: 80%; /* Adjust table width */
+  margin: 0 auto; /* Center table */
+  border-collapse: collapse;
+  background-color: rgba(51, 51, 51, 0.95); /* Semi-transparent darker background for table */
+  border-radius: 8px;
+  overflow: hidden; /* For rounded corners on table */
+  margin-bottom: 30px;
+}
+
+.standings-table-container th, .standings-table-container td {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(68, 68, 68, 0.7); /* Semi-transparent darker borders */
+  text-align: left;
+}
+
+.standings-table-container th {
+  background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent pure black for table header */
+  color: #FFD700;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.standings-table-container tr:last-child td {
+  border-bottom: none;
+}
+
+.standings-table-container td {
+  color: #F0F0F0;
+}
+
+.standings-table-container tr.your-team-row {
+  background-color: rgba(63, 63, 63, 0.98); /* Highlight your team's row with more opacity */
+  color: #FFD700;
+  font-weight: bold;
+}
+
+/* Social Links Grid */
+.social-links-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.social-icon {
+  background-color: rgba(51, 51, 51, 0.9); /* Semi-transparent dark */
+  color: #FFD700;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  min-width: 120px; /* Ensure some minimum width */
+  text-align: center;
+}
+
+.social-icon:hover {
+  background-color: #FFD700;
+  color: #1a1a1a;
+  transform: translateY(-5px);
+}
+
+/* Responsive adjustments for Home page */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 80px 15px;
+    min-height: 400px;
+  }
+  .hero-section h1 {
+    font-size: 3em;
+  }
+  .hero-section p {
+    font-size: 1.1em;
+  }
+  .cta-button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+  }
+  .highlights-section,
+  .standings-overview-section,
+  .social-feed-section {
+    margin: 30px auto;
+    padding: 20px;
+  }
+  .section-header h2 {
+    font-size: 2em;
+  }
+  .highlight-grid {
+    grid-template-columns: 1fr;
+  }
+}

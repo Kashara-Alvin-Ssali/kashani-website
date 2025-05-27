@@ -1,0 +1,67 @@
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  scroll-behavior: smooth;
+  /* Ensure no unexpected horizontal scroll */
+  overflow-x: hidden; /* ADDED THIS for robustness with full-width sections */
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  /* Removed original padding as individual page components will handle their own spacing
+     or the global padding will be taken care of by the padding-top */
+  /* padding: 20px; */ /* COMMENTED OUT / REMOVED this line */
+  /* max-width: 1200px; */ /* COMMENTED OUT / REMOVED this line for full-width components */
+  /* margin: 0 auto; */ /* COMMENTED OUT / REMOVED this line for full-width components */
+
+  padding-top: 70px; /* <--- ADDED/MODIFIED THIS LINE: This creates space for the fixed navbar */
+  box-sizing: border-box; /* ADDED THIS for consistent box model */
+}
+
+/* Base styles for headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #FFD700;
+  margin-top: 0.8em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}
+
+/* Base styles for links */
+a {
+  color: #FFD700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #FFEA00;
+  text-decoration: underline;
+}
+
+/* General button styling (for any button that isn't a specific CTA) */
+button {
+  background-color: #333;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FFD700;
+  color: #1a1a1a;
+}

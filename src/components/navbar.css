@@ -1,0 +1,92 @@
+.horizontal-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #1a1a1a;
+  height: 70px; /* Keep the height explicit */
+
+  /* --- ADDITIONS FOR STICKY NAVBAR --- */
+  position: fixed; /* Makes the element fixed relative to the viewport */
+  top: 0;          /* Positions it at the very top of the viewport */
+  left: 0;         /* Positions it at the very left of the viewport */
+  width: 100%;     /* Ensures it spans the full width of the viewport */
+  z-index: 1000;   /* Ensures it stays on top of other content (higher value means on top) */
+  /* --- END ADDITIONS --- */
+}
+
+.navbar-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area .navbar-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.logo-area .logo-text {
+  font-size: 2.0rem;
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #222;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  z-index: 1000; /* Ensure dropdown is above other content too */
+}
+
+.nav-links a {
+    color: #FFD700;
+    text-decoration: none;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFEA00;
+}
+
+.nav-links .dropdown span {
+    color: #FFD700;
+    cursor: pointer;
+    padding: 5px 0;
+}
+
+.nav-links .dropdown span:hover {
+    color: #FFEA00;
+}
+
+.nav-icons a,
+.lang-toggle {
+  color: #FFD700;
+  margin-left: 15px;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
