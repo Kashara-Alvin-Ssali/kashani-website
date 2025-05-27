@@ -1,54 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaGlobe } from 'react-icons/fa';
+import React, { useState } from 'react'; // Import useState
 import { Link } from 'react-router-dom';
 import '../components/navbar.css';
-import logo from '../assets/logo.jpg';
-import '../css/Players.css'; // Keep this import as it was
+
+// Import your logo image
+import logo from '../assets/logo.jpg'; // Make sure this path is correct
 
 const Navbar = () => {
-  const [language, setLanguage] = useState('EN');
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
 
-  const handleLanguageToggle = () => {
-    setLanguage(prev => (prev === 'EN' ? 'LG' : 'EN'));
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <nav className="navbar horizontal-navbar">
-      <div className="navbar-section logo-area">
-        <img src={logo} alt="Kashani FC Logo" className="navbar-logo" />
-        <span className="logo-text">Kashani FC</span>
+    <nav className="horizontal-navbar">
+      <div className="navbar-section">
+        <div className="logo-area">
+          <Link to="/" className="navbar-logo-link"> {/* Wrap logo and text in a Link */}
+            <img src={logo} alt="Kashani FC Logo" className="navbar-logo" />
+            <span className="logo-text">Kashani FC</span>
+          </Link>
+        </div>
       </div>
 
-      <ul className="navbar-section nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        {/* Added Gallery Link */}
-        <li><Link to="/gallery">Gallery</Link></li> {/* <--- ADDED THIS LINE */}
-        <li
-          className="dropdown"
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
-        >
-          <span>Management ▾</span>
-          {/* {showDropdown && (
-            <ul className="dropdown-menu">
-              <li><Link to="/players/staff">Staff</Link></li>
-              <li><Link to="/players/lineup">Lineup</Link></li>
-              <li><Link to="/players/youth">Citizens</Link></li>
-            </ul>
-          )} */}
+      {/* Hamburger Menu Button (visible on mobile) */}
+      <button className="hamburger-menu" onClick={toggleMobileMenu}>
+        ☰ {/* You can use a dedicated icon library here like Font Awesome */}
+      </button>
+
+      {/* Navigation Links (visible on desktop, toggled on mobile) */}
+      <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}> {/* Apply 'open' class when menu is open */}
+        <li><Link to="/" onClick={toggleMobileMenu}>Home</Link></li>
+        <li><Link to="/about" onClick={toggleMobileMenu}>About</Link></li>
+        <li><Link to="/gallery" onClick={toggleMobileMenu}>Gallery</Link></li>
+        {/*
+        <li>
+          <div className="dropdown">
+            <span onClick={() => alert('Team dropdown clicked')}>Team</span>
+            <div className="dropdown-menu">
+              <Link to="/players" onClick={toggleMobileMenu}>Players</Link>
+              <Link to="/fixtures" onClick={toggleMobileMenu}>Fixtures</Link>
+            </div>
+          </div>
         </li>
-        <li><Link to="/contact">Contact</Link></li>
+        */}
+        <li><Link to="/contact" onClick={toggleMobileMenu}>Contact</Link></li>
       </ul>
 
-      <div className="navbar-section nav-icons">
-        <a href="https://facebook.com" target="_blank" rel="noreferrer"><FaFacebook /></a>
-        <a href="https://x.com/Kashani_FC" target="_blank" rel="noreferrer"><FaTwitter /></a>
-        <a href="https://www.instagram.com/kashani.fc_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer"><FaInstagram /></a>
-        <button onClick={handleLanguageToggle} className="lang-toggle">
-          <FaGlobe /> {language}
-        </button>
+      {/* Right Section (Icons and Language Toggle) - hidden on mobile initially, potentially part of mobile menu */}
+      <div className="nav-icons">
+        <a href="#search" aria-label="Search"><i className="fas fa-search"></i></a>
+        <a href="#profile" aria-label="Profile"><i className="fas fa-user"></i></a>
+        <button className="lang-toggle">EN</button>
       </div>
     </nav>
   );

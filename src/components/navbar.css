@@ -1,18 +1,19 @@
+/* src/components/navbar.css */
+
 .horizontal-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   background-color: #1a1a1a;
-  height: 70px; /* Keep the height explicit */
+  height: 70px;
 
-  /* --- ADDITIONS FOR STICKY NAVBAR --- */
-  position: fixed; /* Makes the element fixed relative to the viewport */
-  top: 0;          /* Positions it at the very top of the viewport */
-  left: 0;         /* Positions it at the very left of the viewport */
-  width: 100%;     /* Ensures it spans the full width of the viewport */
-  z-index: 1000;   /* Ensures it stays on top of other content (higher value means on top) */
-  /* --- END ADDITIONS --- */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box; /* Ensures padding is included in total width */
 }
 
 .navbar-section {
@@ -38,26 +39,17 @@
   font-weight: bold;
 }
 
+/* Nav Links (Default Desktop State) */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
+  margin: 0; /* Remove default ul margin */
+  padding: 0; /* Remove default ul padding */
 }
 
 .nav-links li {
   position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #222;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  z-index: 1000; /* Ensure dropdown is above other content too */
 }
 
 .nav-links a {
@@ -71,14 +63,54 @@
     color: #FFEA00;
 }
 
+/* Dropdown Menu - Keep its styling for desktop */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #222;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  z-index: 1001; /* Ensure dropdown is above the fixed navbar itself */
+  min-width: 120px; /* Give dropdown some width */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  /* Hide by default, show on hover/focus */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show dropdown on hover */
+.nav-links li:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    padding: 8px 10px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+
 .nav-links .dropdown span {
     color: #FFD700;
     cursor: pointer;
     padding: 5px 0;
+    /* Add a pseudo-element for a subtle arrow if desired */
+    /* &::after { content: ' \25BC'; font-size: 0.8em; margin-left: 5px; } */
 }
 
 .nav-links .dropdown span:hover {
     color: #FFEA00;
+}
+
+.nav-icons {
+  display: flex; /* Keep icons together */
+  align-items: center;
 }
 
 .nav-icons a,
@@ -89,4 +121,112 @@
   background: none;
   border: none;
   cursor: pointer;
+}
+
+/* Hamburger Menu Button (Hidden by default on desktop) */
+.hamburger-menu {
+  display: none; /* Hidden on large screens */
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 2.5rem; /* Bigger hamburger icon */
+  cursor: pointer;
+  padding: 5px 10px;
+  z-index: 1002; /* Ensure it's above other elements */
+}
+
+
+/* --- Mobile Responsiveness (Media Query) --- */
+@media (max-width: 768px) { /* Adjust breakpoint as needed for when menu should collapse */
+  .horizontal-navbar {
+    padding: 0 15px; /* Slightly less padding on smaller screens */
+  }
+
+  .nav-links {
+    /* Mobile Menu Styles (initially hidden, fixed position) */
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Fixed position for overlay menu */
+    top: 70px; /* Start below the fixed navbar */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px); /* Take up remaining viewport height */
+    background-color: rgba(26, 26, 26, 0.95); /* Semi-transparent dark background */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease-in-out; /* Smooth slide transition */
+    transform: translateX(-100%); /* Start off-screen to the left */
+    z-index: 999; /* Below the navbar, but above page content */
+    overflow-y: auto; /* Enable scrolling for many links */
+    padding-top: 20px; /* Padding inside the mobile menu */
+  }
+
+  .nav-links.open {
+    transform: translateX(0); /* Slide in when 'open' class is present */
+  }
+
+  .nav-links li {
+    width: 100%; /* Full width list items */
+    text-align: center;
+    margin-bottom: 15px; /* Space between links */
+  }
+
+  .nav-links a,
+  .nav-links .dropdown span {
+    display: block; /* Make links block level to fill width */
+    padding: 15px 20px; /* Larger tap area */
+    font-size: 1.3rem; /* Bigger font size for mobile links */
+    color: #FFD700; /* Ensure consistent color */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+  }
+
+  .nav-links li:last-child a,
+  .nav-links li:last-child .dropdown span {
+      border-bottom: none; /* No border for the last item */
+  }
+
+  /* Hide regular nav icons and language toggle on mobile as they'll be part of the mobile menu or handled differently */
+  .nav-icons {
+    display: none;
+  }
+
+  /* Show the hamburger menu button */
+  .hamburger-menu {
+    display: block;
+  }
+
+  /* Hide the dropdown menu on mobile (as it will be a flat list or part of mobile menu logic) */
+  .dropdown-menu {
+      display: none; /* Hide sub-dropdowns on mobile, handle as flat links */
+  }
+
+  /* If you want to include icons and language toggle inside the mobile menu: */
+  /* You would add new list items for them within the nav-links in Navbar.js
+     and style them here. Example:
+  .nav-links .mobile-icons {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+      gap: 20px;
+  }
+  */
+}
+
+/* Further smaller screen adjustments */
+@media (max-width: 480px) {
+  .logo-area .navbar-logo {
+    width: 45px; /* Slightly smaller logo on very small screens */
+    height: 45px;
+    margin-right: 10px;
+  }
+  .logo-area .logo-text {
+    font-size: 1.5rem; /* Adjust text size for very small screens */
+  }
+  .hamburger-menu {
+    font-size: 2rem;
+  }
+  .nav-links a,
+  .nav-links .dropdown span {
+    font-size: 1.1rem;
+    padding: 12px 15px;
+  }
 }
