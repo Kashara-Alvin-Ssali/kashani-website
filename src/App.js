@@ -1,3 +1,5 @@
+import Management from './pages/Management';
+
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import About from './pages/About';
 import Players from './pages/Players';
@@ -8,6 +10,8 @@ import Home from './pages/Home';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 
+
+
 // Import your new Gallery component here
 import Gallery from './pages/Gallery'; // <--- ADDED THIS LINE
 
@@ -15,15 +19,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* <header>
-          <h1>Kashani Football Team</h1>
-          <nav>
-            <Link to="/">About</Link> |{" "}
-            <Link to="/players">Players</Link> |{" "}
-            <Link to="/fixtures">Fixtures</Link> |{" "}
-            <Link to="/contact">Contact</Link>
-          </nav>
-        </header> */}
+
         <Navbar />
         <main className="content">
           <Routes>
@@ -32,6 +28,9 @@ function App() {
             <Route path="/players" element={<Players />} />
             <Route path="/fixtures" element={<Fixtures />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/management" element={<Management />} />
+            <Route path="/players" element={<Players />} />
+          
             {/* ADD THIS NEW ROUTE FOR YOUR GALLERY PAGE */}
             <Route path="/gallery" element={<Gallery />} /> {/* <--- ADDED THIS ROUTE */}
           </Routes>

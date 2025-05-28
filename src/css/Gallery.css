@@ -1,60 +1,135 @@
 /* src/css/Gallery.css */
 
-/* ... other styles ... */
+.gallery-container {
+  padding: 40px 20px; /* Consistent padding with other pages */
+  max-width: 1200px; /* Keep max-width for desktop */
+  margin: 0 auto;
+  color: #f0f0f0;
+  min-height: 80vh; /* Ensure content pushes footer down */
+  box-sizing: border-box;
+}
+
+.gallery-header {
+  font-size: 2.8rem;
+  color: #FFD700;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.gallery-intro {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Image Grid Layout */
 .image-grid {
   display: grid;
-  /* Fewer columns, larger minmax width */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* <--- INCREASED minmax WIDTH, potentially FEWER COLUMNS */
-  gap: 25px; /* Increased gap slightly to give more space around larger images */ /* <--- INCREASED GAP */
+  /* On desktop, keep your current preferred layout */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
   justify-content: center;
-  padding: 30px; /* Add some padding around the grid for visual breathing room */ /* <--- ADDED PADDING */
+  padding: 0px; /* Remove padding here, use .gallery-container padding */
 }
 
 /* Individual Gallery Item (Card) Styling */
 .gallery-item {
-  background-color: rgba(43, 43, 43, 0.95);
+  background-color: #1e1e1e; /* Darker than before to make images pop more */
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Softer shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
 .gallery-item:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  transform: translateY(-5px) scale(1.01); /* Slightly less aggressive hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .gallery-item img {
   width: 100%;
-  height: auto; /* Set height to auto to maintain aspect ratio with increased width */ /* <--- CHANGED HEIGHT TO AUTO */
-  object-fit: cover;
+  height: 250px; /* Fixed height for consistent grid items on desktop */
+  object-fit: cover; /* Ensures images cover the area without distortion */
   display: block;
   transition: opacity 0.3s ease;
 }
 
 .gallery-item img:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
-/* ... other styles ... */
-
-/* Responsive adjustments (you might need to tweak these based on the new image sizes) */
+/* --- Responsive adjustments for mobile (Instagram-like feel) --- */
 @media (max-width: 768px) {
+  .gallery-container {
+    padding: 30px 15px; /* Reduce horizontal padding for mobile */
+  }
+
+  .gallery-header {
+    font-size: 2.2rem;
+  }
+
+  .gallery-intro {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
   .image-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust min-width for smaller screens */
-    gap: 20px;
-    padding: 20px;
+    /* For tablets and larger phones, a 2-column layout can work well */
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Smaller gap for a denser grid */
+    padding: 0;
+  }
+
+  .gallery-item {
+    border-radius: 0; /* Often no border-radius on Instagram's grid items */
+    box-shadow: none; /* No box shadow for a cleaner grid */
+  }
+
+  .gallery-item img {
+    height: 180px; /* Adjust height for 2-column mobile view */
   }
 }
 
 @media (max-width: 480px) {
   .image-grid {
-    grid-template-columns: 1fr; /* Keep single column on very small screens */
-    gap: 15px;
-    padding: 15px;
+    /* For smaller phones, switch to a single column that takes full width */
+    grid-template-columns: 1fr; /* Single column */
+    gap: 5px; /* Even smaller gap or no gap for a flush look */
+    padding: 0;
+  }
+
+  .gallery-item {
+    border-radius: 0; /* No border-radius */
+    box-shadow: none; /* No box shadow */
+  }
+
+  .gallery-item img {
+    height: 280px; /* Adjust height to fill more screen vertically */
+    /* You might even set height: auto if you want the original aspect ratio on full-width images,
+       but fixed height often looks more consistent in a grid */
   }
 }
+
+/* Optional: If you want a perfectly square image grid like Instagram (more advanced) */
+/* .gallery-item {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; // This creates a perfect square ratio
+  height: 0; // Essential for padding-top trick
+}
+
+.gallery-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+*/

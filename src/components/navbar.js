@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../components/navbar.css';
 
@@ -29,23 +29,24 @@ const Navbar = () => {
       </button>
 
       {/* Navigation Links (visible on desktop, toggled on mobile) */}
-      <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}> {/* Apply 'open' class when menu is open */}
+      <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
         <li><Link to="/" onClick={toggleMobileMenu}>Home</Link></li>
         <li><Link to="/about" onClick={toggleMobileMenu}>About</Link></li>
         <li><Link to="/gallery" onClick={toggleMobileMenu}>Gallery</Link></li>
-        {/*
-        <li>
-          <div className="dropdown">
-            <span onClick={() => alert('Team dropdown clicked')}>Team</span>
-            <div className="dropdown-menu">
-              <Link to="/players" onClick={toggleMobileMenu}>Players</Link>
-              <Link to="/fixtures" onClick={toggleMobileMenu}>Fixtures</Link>
-            </div>
-          </div>
+
+        <li className="dropdown">
+          {/* REMOVED THE LITERAL '▾' HERE. The arrow will now come from CSS. */}
+          <span className="dropdown-title">Team</span> {/* <--- MODIFIED THIS LINE */}
+          <ul className="dropdown-menu">
+            <li><Link to="/management" onClick={toggleMobileMenu}>Committee</Link></li>
+            <li><Link to="/players" onClick={toggleMobileMenu}>Players</Link></li>
+
+          </ul>
         </li>
-        */}
+
         <li><Link to="/contact" onClick={toggleMobileMenu}>Contact</Link></li>
       </ul>
+
 
       {/* Right Section (Icons and Language Toggle) - hidden on mobile initially, potentially part of mobile menu */}
       <div className="nav-icons">

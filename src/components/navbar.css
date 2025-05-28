@@ -50,6 +50,9 @@
 
 .nav-links li {
   position: relative;
+  /* Ensure list items containing dropdowns also act like regular list items */
+  display: flex; /* Make li a flex container to align its content (link/span) */
+  align-items: center; /* Vertically center content */
 }
 
 .nav-links a {
@@ -61,6 +64,36 @@
 
 .nav-links a:hover {
     color: #FFEA00;
+}
+
+/* Container for dropdown (the 'Team' li) */
+.nav-links .dropdown { /* This targets the <li> that acts as a dropdown parent */
+    /* No special display property needed here as it's already handled by .nav-links li */
+    position: relative; /* Ensure dropdown menu positions correctly */
+}
+
+/* The 'Team' span itself (the clickable part) */
+.nav-links .dropdown > span { /* Use direct child selector to target the span inside .dropdown */
+    color: #FFD700;
+    cursor: pointer;
+    padding: 5px 0;
+    display: flex; /* Make the span a flex container to align text and arrow */
+    align-items: center;
+    gap: 5px; /* Space between text and arrow */
+}
+
+/* Optional: Add a small arrow icon next to "Team" */
+.nav-links .dropdown > span::after {
+    content: '\25BC'; /* Unicode for a small down arrow */
+    font-size: 0.7em;
+    margin-left: 3px;
+    vertical-align: middle;
+    transition: transform 0.2s ease; /* Smooth rotation for arrow */
+}
+
+/* Rotate arrow when dropdown is hovered on desktop */
+.nav-links .dropdown:hover > span::after {
+    transform: rotate(180deg);
 }
 
 /* Dropdown Menu - Keep its styling for desktop */
@@ -81,10 +114,12 @@
   visibility: hidden;
   transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  list-style: none; /* Ensure no bullet points for dropdown menu */
+  margin: 0; /* Remove default ul margin */
 }
 
 /* Show dropdown on hover */
-.nav-links li:hover .dropdown-menu {
+.nav-links .dropdown:hover .dropdown-menu { /* Target when the .dropdown li is hovered */
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -93,19 +128,14 @@
 .dropdown-menu a {
     padding: 8px 10px;
     white-space: nowrap; /* Prevent text wrapping */
+    color: #FFD700; /* Ensure dropdown links are also yellow */
+    font-size: 0.95em; /* Slightly smaller for dropdown items */
 }
 
-
-.nav-links .dropdown span {
-    color: #FFD700;
-    cursor: pointer;
-    padding: 5px 0;
-    /* Add a pseudo-element for a subtle arrow if desired */
-    /* &::after { content: ' \25BC'; font-size: 0.8em; margin-left: 5px; } */
-}
-
-.nav-links .dropdown span:hover {
+.dropdown-menu a:hover {
+    background-color: #333; /* Darker background on hover for dropdown items */
     color: #FFEA00;
+    text-decoration: none; /* No underline for dropdown links */
 }
 
 .nav-icons {
@@ -167,24 +197,26 @@
   .nav-links li {
     width: 100%; /* Full width list items */
     text-align: center;
-    margin-bottom: 15px; /* Space between links */
+    margin-bottom: 0; /* No margin-bottom for mobile links with border */
   }
 
+  /* Specific styles for mobile links */
   .nav-links a,
-  .nav-links .dropdown span {
-    display: block; /* Make links block level to fill width */
+  .nav-links .dropdown > span { /* Target dropdown title on mobile */
+    display: block; /* Make links/spans block level to fill width */
     padding: 15px 20px; /* Larger tap area */
     font-size: 1.3rem; /* Bigger font size for mobile links */
     color: #FFD700; /* Ensure consistent color */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
   }
 
-  .nav-links li:last-child a,
-  .nav-links li:last-child .dropdown span {
-      border-bottom: none; /* No border for the last item */
+  /* No border for the last item in the mobile menu */
+  .nav-links li:last-of-type > a, /* Last direct link */
+  .nav-links li:last-of-type > .dropdown > span { /* Last dropdown title */
+    border-bottom: none;
   }
 
-  /* Hide regular nav icons and language toggle on mobile as they'll be part of the mobile menu or handled differently */
+  /* Hide regular nav icons and language toggle on mobile */
   .nav-icons {
     display: none;
   }
@@ -194,21 +226,45 @@
     display: block;
   }
 
-  /* Hide the dropdown menu on mobile (as it will be a flat list or part of mobile menu logic) */
+  /* Mobile Dropdown Behavior */
+  /* On mobile, we want the dropdown to be part of the main list, not a separate overlay.
+     This assumes you've flattened the dropdown in Navbar.js for mobile. */
   .dropdown-menu {
-      display: none; /* Hide sub-dropdowns on mobile, handle as flat links */
+    position: static; /* Remove fixed/absolute positioning */
+    display: flex; /* Always display as flex for vertical list */
+    flex-direction: column;
+    width: auto; /* Allow it to fit content */
+    min-width: unset; /* Remove min-width */
+    background-color: transparent; /* Transparent background */
+    box-shadow: none; /* No shadow for nested mobile menu */
+    padding: 0; /* No padding on the menu container itself */
+    border-radius: 0;
+    opacity: 1; /* Always visible when parent is open */
+    visibility: visible;
+    transform: none; /* No transform */
+    z-index: auto; /* Reset z-index */
   }
 
-  /* If you want to include icons and language toggle inside the mobile menu: */
-  /* You would add new list items for them within the nav-links in Navbar.js
-     and style them here. Example:
-  .nav-links .mobile-icons {
-      display: flex;
-      justify-content: center;
-      padding: 20px 0;
-      gap: 20px;
+  .dropdown-menu li {
+      margin-bottom: 0; /* No margin for sub-items */
+      width: auto; /* Allow sub-items to fit content */
+      text-align: left; /* Align sub-items left */
   }
-  */
+
+  .dropdown-menu a {
+      padding: 10px 30px; /* Indent sub-items */
+      font-size: 1.1rem; /* Slightly smaller font for sub-items */
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05); /* Lighter border for sub-items */
+  }
+
+  .dropdown-menu li:last-child a {
+      border-bottom: none; /* No border for the last sub-item */
+  }
+
+  /* Remove arrow on mobile dropdown title */
+  .nav-links .dropdown > span::after {
+      display: none;
+  }
 }
 
 /* Further smaller screen adjustments */
@@ -225,7 +281,7 @@
     font-size: 2rem;
   }
   .nav-links a,
-  .nav-links .dropdown span {
+  .nav-links .dropdown > span { /* Target dropdown title on very small mobile */
     font-size: 1.1rem;
     padding: 12px 15px;
   }

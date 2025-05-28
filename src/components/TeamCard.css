@@ -1,0 +1,27 @@
+.team-card {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  margin: 1rem;
+}
+
+.team-card img.team-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.team-card h3 {
+  margin: 0.3rem 0;
+  font-weight: 600;
+}
+
+.team-card p {
+  color: gray;
+  font-size: 0.85rem;
+}

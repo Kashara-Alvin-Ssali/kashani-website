@@ -6,7 +6,7 @@ import '../css/Home.css'; // Make sure this path is correct
 import thrillBg from '../assets/thrill-bg.jpg';
 
 // Import the image for the "Dominant Win" card
-import domiImage from '../assets/domi.jpg';
+import domiImage from '../assets/domii.jpg';
 
 // Import the new image for the "Player Spotlight" card
 import sadicImage from '../assets/sadic.jpg'; // <--- ADDED THIS LINE
