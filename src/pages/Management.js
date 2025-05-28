@@ -21,10 +21,10 @@ const management = [
     bio: 'Muhammad oversees the strategic operations and administrative functions, ensuring efficiency and excellence in all club activities.' // Added bio
   },
   {
-    name: 'Albert K.',
-    title: 'Coach',
+    name: 'Joel Taremwa.',
+    title: 'Fans Representative',
     image: albertImage,
-    bio: 'Albert K. is the tactical mastermind behind our team, dedicated to player development and delivering winning performances.' // Added bio
+    bio: 'Joel ifronts all the concerns of the fans to the committee to ensure transparency in the team.' // Added bio
   },
   // Add more management members with their bios
 ];
