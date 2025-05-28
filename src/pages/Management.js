@@ -5,7 +5,7 @@ import '../css/Management.css';
 // IMPORTANT: Replace these with your actual image filenames!
 import agabaImage from '../assets/domi.jpg'; // Example: Assuming domi.jpg is for Agaba Shemus
 import janeImage from '../assets/k1.jpg'; // Example: Assuming sadic.jpg is for Jane Smith
-import albertImage from '../assets/logo.jpg'; // Example: Replace with an actual image for Albert K.
+import albertImage from '../assets/joel.jpg'; // Example: Replace with an actual image for Albert K.
 
 const management = [
   {
