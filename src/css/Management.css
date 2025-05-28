@@ -5,15 +5,15 @@
   background-color: #111;
   color: #fff;
   min-height: 100vh;
-  box-sizing: border-box; /* Ensures padding is included in total height */
+  box-sizing: border-box;
 }
 
 .page-container h2 {
   color: #ffcc00;
-  font-size: 2.8rem; /* Increased font size for title consistency */
+  font-size: 2.8rem;
   text-align: center;
   margin-bottom: 2rem;
-  padding-top: 20px; /* Added padding for top spacing */
+  padding-top: 20px;
 }
 
 .card-grid {
@@ -21,25 +21,25 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
-  max-width: 1200px; /* Added max-width to grid */
-  margin: 0 auto; /* Centered the grid */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .card {
   background-color: #1e1e1e;
-  border-radius: 12px;
+  border-radius: 12px; /* This border-radius is for the card itself, not the image */
   padding: 1rem;
-  max-width: 250px; /* Slightly increased max-width for better content fit */
-  min-height: 320px; /* Added a min-height for consistent card size */
+  max-width: 250px;
+  min-height: 320px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(255, 204, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden; /* Hide overflowing content initially */
-  position: relative; /* For absolute positioning of bio if needed, or for general context */
-  display: flex; /* Use flexbox for internal alignment */
+  overflow: hidden;
+  position: relative;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align content to the top */
+  justify-content: flex-start;
 }
 
 .card:hover {
@@ -48,42 +48,43 @@
 }
 
 .card img {
-  width: 150px; /* Increased from 120px to make images bigger */
-  height: 150px; /* Increased from 120px to make images bigger */
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem; /* Adjusted margin */
-  border: 3px solid #ffcc00; /* Added a subtle border */
+  /* --- MODIFIED FOR RECTANGULAR IMAGES --- */
+  width: 100%; /* Make image fill the card's width */
+  height: 200px; /* Set a fixed height for a rectangular shape, adjust as needed */
+  border-radius: 8px; /* Changed from 50% to a subtle corner radius, or 0 for sharp corners */
+  object-fit: cover; /* Ensures image covers the area, cropping if necessary to fit the rectangle */
+  margin-bottom: 1rem;
+  border: 3px solid #ffcc00;
 }
 
 .card h3 {
-  margin: 0 0 0.5rem; /* Adjusted margin */
+  margin: 0 0 0.5rem;
   color: #fff;
-  font-size: 1.3rem; /* Slightly larger name */
+  font-size: 1.3rem;
 }
 
-.member-title { /* New class for the title paragraph */
+.member-title {
   font-size: 1rem;
   color: #ccc;
-  margin-bottom: 1rem; /* Space before bio */
+  margin-bottom: 1rem;
 }
 
 /* --- Bio Specific Styles --- */
 .member-bio {
   font-size: 0.9rem;
-  color: #aaa; /* Slightly darker color for bio text */
+  color: #aaa;
   line-height: 1.4;
-  text-align: center; /* Center bio text */
-  opacity: 0; /* Initially hidden */
-  max-height: 0; /* Initially collapsed */
-  overflow: hidden; /* Hide overflow when collapsed */
-  transition: opacity 0.3s ease, max-height 0.3s ease; /* Smooth transition for show/hide */
-  margin-top: 0.5rem; /* Space above bio */
+  text-align: center;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  margin-top: 0.5rem;
 }
 
 .card:hover .member-bio {
-  opacity: 1; /* Show bio on hover */
-  max-height: 100px; /* Max height when visible (adjust as needed based on bio length) */
+  opacity: 1;
+  max-height: 100px; /* Adjust as needed */
 }
 
 /* Responsive Adjustments */
@@ -92,15 +93,17 @@
     font-size: 2.2rem;
   }
   .card {
-    max-width: 100%; /* Allow cards to take full width on smaller screens */
-    min-height: auto; /* Remove min-height for flexible content */
-    padding-bottom: 2rem; /* Ensure enough padding at bottom */
+    max-width: 100%;
+    min-height: auto;
+    padding-bottom: 2rem;
   }
   .member-bio {
-    /* For mobile, show bio by default as hover isn't reliable on touch devices */
     opacity: 1;
-    max-height: fit-content; /* Allow bio to take natural height */
+    max-height: fit-content;
     overflow: visible;
+  }
+  .card img { /* Adjust image size for smaller screens if necessary */
+    height: 180px; /* Example: slightly smaller rectangular image on tablets */
   }
 }
 
@@ -115,8 +118,7 @@
     padding: 1rem;
   }
   .card img {
-    width: 120px; /* Keep them a bit smaller on very small screens */
-    height: 120px;
+    height: 150px; /* Example: smaller rectangular image on mobile phones */
   }
   .card h3 {
     font-size: 1.2rem;
