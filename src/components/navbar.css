@@ -141,6 +141,54 @@
 .nav-icons {
   display: flex; /* Keep icons together */
   align-items: center;
+/* Styles for auth links/buttons within nav-icons */
+.nav-icons .nav-icon-link,
+.nav-icons .nav-icon-button {
+  color: #FFD700;
+  text-decoration: none;
+  margin-left: 15px; /* Spacing between items in nav-icons */
+  font-size: 1em; /* Adjust to match other text or desired size */
+  padding: 8px 12px; /* Add some padding to make them look like buttons/links */
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-icons .nav-icon-link:hover,
+.nav-icons .nav-icon-button:hover {
+  background-color: #333; /* Darker background on hover */
+  color: #FFEA00;
+}
+
+.nav-icons .nav-icon-button {
+  background: none;
+  border: 1px solid #FFD700; /* Optional: border for button style */
+  cursor: pointer;
+}
+
+.nav-icons .navbar-username {
+  color: #FFD700;
+  margin-left: 15px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  padding: 8px 0; /* Align with button/link padding */
+}
+
+.nav-icons .navbar-username .fa-user {
+  margin-right: 5px;
+}
+
+/* Ensure .nav-icons itself is visible on desktop and hidden on mobile (as per existing logic) */
+@media (min-width: 769px) { /* Screens larger than mobile breakpoint */
+  .nav-icons {
+    display: flex !important; /* Ensure it's flex to show items in a row */
+  }
+}
+
+@media (max-width: 768px) {
+  /* The existing .nav-icons { display: none; } will hide this section on mobile.
+     The auth links are conditionally rendered inside .nav-links for mobile in the JS. */
+}
 }
 
 .nav-icons a,
@@ -284,5 +332,72 @@
   .nav-links .dropdown > span { /* Target dropdown title on very small mobile */
     font-size: 1.1rem;
     padding: 12px 15px;
+  }
+}
+/* Styles for new elements related to AuthContext */
+.logout-button-navbar {
+  background: none;
+  border: none;
+  color: #FFD700; /* Match link color */
+  cursor: pointer;
+  padding: 5px 0; /* Match link padding */
+  font-size: 1em; /* Match link font size */
+  font-family: inherit; /* Inherit font from navbar */
+  display: inline; /* Behaves like a link in the flow */
+  transition: color 0.3s ease;
+}
+
+.logout-button-navbar:hover {
+  color: #FFEA00; /* Match link hover color */
+}
+
+.navbar-username {
+  color: #FFD700;
+  margin-left: 15px; /* Space it out in nav-icons */
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-username .fa-user {
+  margin-right: 5px;
+}
+
+/* Ensure nav-icons is displayed if it contains the username */
+.nav-icons {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Mobile specific adjustments for new auth elements */
+@media (max-width: 768px) {
+  .nav-links .logout-button-navbar {
+    display: block; /* Make it block for full width tap area */
+    padding: 15px 20px; /* Match mobile link padding */
+    font-size: 1.3rem; /* Match mobile link font size */
+    text-align: left; /* Align text to the left like other links */
+    width: 100%; /* Take full width */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+  }
+
+  .nav-links li:last-of-type > .logout-button-navbar {
+    border-bottom: none; /* No border for the last item if it's the logout button */
+  }
+
+  /* Hide .nav-icons by default on mobile, username will be in .nav-links if needed */
+  /* If you want username in .nav-links on mobile, it should be styled like other .nav-links li a */
+  .nav-icons .navbar-username {
+    display: none; /* Typically hide this in mobile if auth links are in the slide-out menu */
+  }
+
+  /* If you decide to put username in the slide-out menu: */
+  .nav-links .navbar-username-mobile { /* Add a specific class if you render it inside nav-links for mobile */
+    display: block;
+    padding: 15px 20px;
+    font-size: 1.3rem;
+    color: #FFD700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
   }
 }

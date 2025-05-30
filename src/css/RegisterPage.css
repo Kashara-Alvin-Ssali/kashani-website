@@ -1,0 +1,123 @@
+.register-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px); /* Full height minus navbar */
+  padding: 20px;
+  background-color: #1c1c1c; /* Darker background for the page */
+  color: #e0e0e0; /* Light text color for the page */
+  margin-top: 70px; /* Account for fixed navbar */
+  box-sizing: border-box;
+}
+
+.register-form-container {
+  background-color: #2a2a2a; /* Slightly lighter dark shade for form */
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  border: 1px solid #FFD700; /* Gold border */
+}
+
+.register-form-container h2 {
+  margin-bottom: 25px;
+  color: #FFD700; /* Gold color for heading */
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #FFD700; /* Gold color for labels */
+  font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #333333; /* Dark input background */
+  color: #e0e0e0; /* Light text in input */
+  border: 1px solid #555555; /* Darker border */
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+  border-color: #FFD700; /* Gold border on focus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Gold glow on focus */
+}
+
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #FFD700; /* Gold background for button */
+  color: #1a1a1a; /* Dark text on gold button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.register-button:hover {
+  background-color: #FFEA00; /* Lighter gold on hover */
+  transform: translateY(-1px);
+}
+
+.register-button:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #FF6B6B; /* Brighter red for errors on dark theme */
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid #FF6B6B;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.success-message {
+  color: #6BFFB8; /* A bright green for success on dark theme */
+  background-color: rgba(107, 255, 184, 0.1);
+  border: 1px solid #6BFFB8;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.login-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #cccccc; /* Lighter grey for link text */
+}
+
+.login-link a {
+  color: #FFD700; /* Gold for the link itself */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+  color: #FFEA00;
+}
