@@ -25,7 +25,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await fetch(`${backendUrl}/api/auth/register`, { // Assuming backend runs on port 3001
+      const response = await fetch(`${backendUrl}/api/auth/login`, { // Assuming backend runs on port 3001
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
