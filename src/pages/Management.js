@@ -16,7 +16,7 @@ const Management = () => {
     teamImage: null
   });
 
-  const backendUrl = 'http://localhost:3001';
+  const backendUrl = 'https://kashani-backend.onrender.com';
 
   useEffect(() => {
     const fetchMembers = async () => {

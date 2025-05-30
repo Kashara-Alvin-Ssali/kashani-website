@@ -4,6 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 // import AuthContext from '../context/AuthContext'; 
 import '../css/RegisterPage.css'; // We'll create this
 
+const backendUrl = "https://kashani-backend.onrender.com";
+
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +35,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/register', { // Assuming backend runs on port 3001
+      const response = await fetch(`${backendUrl}/api/auth/register`, { // Assuming backend runs on port 3001
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
