@@ -15,7 +15,7 @@ const Gallery = () => {
   const [editingCaption, setEditingCaption] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
 
-  const backendUrl = 'kashani-backend-production.up.railway.app';
+  const backendUrl = 'https://kashani-backend.onrender.com';
 
   const fetchImages = async () => {
     setIsLoading(true);

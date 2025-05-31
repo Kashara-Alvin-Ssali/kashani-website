@@ -20,7 +20,7 @@ const Players = () => {
     playerImage: null
   });
 
-  const backendUrl = 'kashani-backend-production.up.railway.app';
+  const backendUrl = 'https://kashani-backend.onrender.com';
 
   useEffect(() => {
     const fetchPlayers = async () => {
