@@ -16,7 +16,7 @@ const Management = () => {
     teamImage: null
   });
 
-  const backendUrl = 'https://kashani-backend.onrender.com';
+  const backendUrl = 'kashani-backend-production.up.railway.app';
 
   useEffect(() => {
     const fetchMembers = async () => {

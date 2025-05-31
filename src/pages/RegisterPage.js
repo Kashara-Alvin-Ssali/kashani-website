@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 // import AuthContext from '../context/AuthContext'; 
 import '../css/RegisterPage.css'; // We'll create this
 
-const backendUrl = "https://kashani-backend.onrender.com";
+const backendUrl = "kashani-backend-production.up.railway.app";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
