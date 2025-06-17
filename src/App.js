@@ -141,40 +141,150 @@ const AppContent = () => {
         <div 
           style={{ 
             position: 'fixed',
-            bottom: '40px',
-            left: '40px',
+            bottom: window.innerWidth <= 768 ? '20px' : '40px',
+            left: window.innerWidth <= 768 ? '20px' : '40px',
             zIndex: 999999,
-            background: '#FF0000',
-            padding: '20px',
+            background: 'rgba(0, 0, 0, 0.8)',
+            padding: window.innerWidth <= 768 ? '15px' : '20px',
             borderRadius: '20px',
-            border: '5px solid #00FF00'
+            border: '3px solid #ffcc00',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(5px)'
           }}
         >
           <button 
             onClick={() => setShowForm(!showForm)}
             style={{
-              background: '#00FF00',
+              background: '#ffcc00',
               color: '#000',
-              fontSize: '3rem',
-              border: '5px solid #FF0000',
+              fontSize: window.innerWidth <= 768 ? '2.5rem' : '3rem',
+              border: '3px solid #000',
               borderRadius: '50%',
-              width: '80px',
-              height: '80px',
+              width: window.innerWidth <= 768 ? '60px' : '80px',
+              height: window.innerWidth <= 768 ? '60px' : '80px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+              transition: 'all 0.3s ease',
+              transform: showForm ? 'rotate(45deg)' : 'none'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = showForm ? 'rotate(45deg) scale(1.1)' : 'scale(1.1)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = showForm ? 'rotate(45deg)' : 'none';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
             }}
           >
             {showForm ? '×' : '+'}
           </button>
           {showForm && (
-            <form className="upload-form" onSubmit={handleSubmit}>
-              <input name="name" value={formData.name} onChange={handleInputChange} placeholder="Name" required />
-              <input name="role" value={formData.role} onChange={handleInputChange} placeholder="Position" required />
-              <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Bio" />
-              <input name="teamImage" type="file" accept="image/*" onChange={handleInputChange} required={!editingId} />
-              <button type="submit">{editingId ? 'Update' : 'Upload'} Member</button>
+            <form 
+              className="upload-form" 
+              onSubmit={handleSubmit}
+              style={{
+                marginTop: '15px',
+                background: 'rgba(0, 0, 0, 0.9)',
+                padding: '20px',
+                borderRadius: '15px',
+                border: '2px solid #ffcc00',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+                backdropFilter: 'blur(5px)',
+                width: window.innerWidth <= 768 ? '280px' : '320px'
+              }}
+            >
+              <input 
+                name="name" 
+                value={formData.name} 
+                onChange={handleInputChange} 
+                placeholder="Name" 
+                required 
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ffcc00',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#fff'
+                }}
+              />
+              <input 
+                name="role" 
+                value={formData.role} 
+                onChange={handleInputChange} 
+                placeholder="Position" 
+                required 
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ffcc00',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#fff'
+                }}
+              />
+              <textarea 
+                name="bio" 
+                value={formData.bio} 
+                onChange={handleInputChange} 
+                placeholder="Bio"
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ffcc00',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#fff',
+                  minHeight: '100px',
+                  resize: 'vertical'
+                }}
+              />
+              <input 
+                name="teamImage" 
+                type="file" 
+                accept="image/*" 
+                onChange={handleInputChange} 
+                required={!editingId}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ffcc00',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#fff'
+                }}
+              />
+              <button 
+                type="submit"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '5px',
+                  border: 'none',
+                  background: '#ffcc00',
+                  color: '#000',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = '#e6b800';
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = '#ffcc00';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                {editingId ? 'Update' : 'Upload'} Member
+              </button>
             </form>
           )}
         </div>,
