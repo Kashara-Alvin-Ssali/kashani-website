@@ -15,8 +15,14 @@
 }
 
 .admin-controls {
-  text-align: center;
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 60px;
+  right: 120px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 9999;
+  background: transparent;
 }
 
 .add-button {
@@ -25,14 +31,39 @@
   font-size: 2rem;
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 9999;
+  padding: 0;
+  line-height: 1;
 }
 
 .add-button:hover {
   background-color: #e6b800;
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .admin-controls {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    flex-direction: row;
+  }
+
+  .add-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+  }
 }
 
 .upload-form {
