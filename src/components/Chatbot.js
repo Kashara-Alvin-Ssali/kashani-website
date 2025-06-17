@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Chatbot.css';
 
 const faqData = [
@@ -41,6 +41,20 @@ const Chatbot = () => {
   ]);
   const [input, setInput] = useState('');
 
+  // Add animation classes
+  useEffect(() => {
+    const chatbotWindow = document.querySelector('.chatbot-window');
+    if (chatbotWindow) {
+      if (isOpen) {
+        chatbotWindow.classList.add('open');
+        chatbotWindow.classList.remove('closed');
+      } else {
+        chatbotWindow.classList.add('closed');
+        chatbotWindow.classList.remove('open');
+      }
+    }
+  }, [isOpen]);
+
   const handleSendMessage = () => {
     if (input.trim() === '') return;
 
@@ -77,6 +91,7 @@ const Chatbot = () => {
         <div className="chatbot-window">
           <div className="chatbot-header">
             <h3>Kashani FC Assistant</h3>
+            <button className="chatbot-close-btn" onClick={toggleChatbot}>✖</button>
           </div>
           <div className="chatbot-messages">
             {messages.map((msg, index) => (
