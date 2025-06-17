@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaEye, FaEyeSlash, FaGoogle, FaFacebook, FaGithub, FaCheck, FaTimes } from 'react-icons/fa';
@@ -30,6 +30,7 @@ const RegisterPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [validationErrors, setValidationErrors] = useState({
     username: '',
     email: '',
@@ -40,8 +41,8 @@ const RegisterPage = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
-  // Validation rules
-  const validationRules = {
+  // Wrap validationRules in useMemo
+  const validationRules = useMemo(() => ({
     username: {
       minLength: 3,
       maxLength: 20,
@@ -57,10 +58,10 @@ const RegisterPage = () => {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       message: 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character'
     }
-  };
+  }), []); // Empty dependency array since these rules are static
 
-  // Validate individual field
-  const validateField = (name, value) => {
+  // Wrap validateField in useCallback
+  const validateField = useCallback((name, value) => {
     if (!touched[name]) return '';
     
     const rules = validationRules[name];
@@ -76,7 +77,7 @@ const RegisterPage = () => {
       return rules.message;
     }
     return '';
-  };
+  }, [touched, validationRules]);
 
   // Handle field blur
   const handleBlur = (e) => {
@@ -149,13 +150,46 @@ const RegisterPage = () => {
       console.log('Registration response:', data);
 
       if (response.ok) {
-        console.log('Registration successful, redirecting to login...');
-        // Store username in localStorage for login page
-        localStorage.setItem('registeredUsername', formData.username);
-        toast.success('Registration successful! Redirecting to login...');
+        console.log('Registration successful, attempting auto-login...');
         
-        // Force navigation to login page using window.location
-        window.location.href = '/login';
+        // Attempt to log in immediately after registration
+        try {
+          const loginResponse = await fetch(`${backendUrl}/api/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              password: formData.password,
+            }),
+          });
+
+          const loginData = await loginResponse.json();
+          
+          if (loginResponse.ok) {
+            // Store username if remember me is checked
+            if (rememberMe) {
+              localStorage.setItem('username', formData.username);
+              localStorage.setItem('rememberMe', 'true');
+            }
+            
+            // Log in the user
+            login(loginData.user, loginData.token);
+            toast.success('Registration and login successful! Redirecting...');
+            navigate('/', { replace: true });
+          } else {
+            // If auto-login fails, redirect to login page
+            localStorage.setItem('registeredUsername', formData.username);
+            toast.success('Registration successful! Please log in.');
+            navigate('/login', { replace: true });
+          }
+        } catch (loginErr) {
+          console.error('Auto-login failed:', loginErr);
+          localStorage.setItem('registeredUsername', formData.username);
+          toast.success('Registration successful! Please log in.');
+          navigate('/login', { replace: true });
+        }
       } else {
         console.error('Registration failed:', data.message);
         toast.error(data.message || 'Registration failed. Please try again.');
@@ -360,6 +394,19 @@ const RegisterPage = () => {
                   Privacy Policy
                 </Link>
               </span>
+            </label>
+          </div>
+
+          <div className="form-options animate-fade-in">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={loading}
+                aria-label="Remember me"
+              />
+              <span>Remember me</span>
             </label>
           </div>
 

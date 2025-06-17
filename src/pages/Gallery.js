@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import AuthContext from '../context/AuthContext';
 import '../css/Gallery.css';
 
@@ -24,7 +24,7 @@ const Gallery = () => {
     ? 'http://localhost:3001'  // matching your local backend port
     : 'https://kashani-backend.onrender.com';
 
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -55,12 +55,16 @@ const Gallery = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [token, backendUrl]);
 
   useEffect(() => {
     fetchImages();
-    return () => notificationTimeoutId && clearTimeout(notificationTimeoutId);
-  }, [token]);
+    return () => {
+      if (notificationTimeoutId) {
+        clearTimeout(notificationTimeoutId);
+      }
+    };
+  }, [fetchImages, notificationTimeoutId]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
