@@ -76,26 +76,26 @@
 }
 
 .message {
-  margin-bottom: 10px;
+  margin: 8px 0;
   padding: 12px 16px;
-  border-radius: 15px;
-  max-width: 85%;
+  border-radius: 12px;
+  max-width: 80%;
   word-wrap: break-word;
   line-height: 1.4;
 }
 
 .message.user {
-  align-self: flex-end;
-  background-color: #FFD700; /* Gold for user messages */
-  color: #1a1a1a;
-  border-bottom-right-radius: 2px;
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
 }
 
 .message.bot {
-  align-self: flex-start;
-  background-color: #3a3a3a; /* Slightly lighter dark for bot messages */
-  color: #f0f0f0;
-  border-bottom-left-radius: 2px;
+  background-color: #f0f0f0;
+  color: #333;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
 }
 
 .chatbot-input-area {
@@ -131,6 +131,80 @@
 .chatbot-input-area button:hover {
   background-color: #FFEA00;
   transform: scale(1.05);
+}
+
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quick-reply-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.quick-reply-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.feedback-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.feedback-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: all 0.2s ease;
+}
+
+.feedback-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #a0a0a0;
+}
+
+.feedback-given {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+.human-handoff {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+.human-handoff a {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.typing-indicator {
+  font-style: italic;
+  color: #777;
 }
 
 /* Mobile Responsiveness */
@@ -190,6 +264,17 @@
     font-size: 1.6rem;
     bottom: 25px;
     right: 25px;
+  }
+
+  .quick-replies {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quick-reply-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
   }
 }
 
