@@ -5,6 +5,7 @@
   background-color: #111;
   color: #fff;
   min-height: 100vh;
+  padding-bottom: 80px; /* Keep padding for content to not overlap with fixed button */
 }
 
 .page-container h2 {
@@ -15,54 +16,79 @@
 }
 
 .admin-controls {
-  position: fixed;
-  top: 60px;
-  right: 120px;
+  position: fixed; /* Explicitly fixed positioning */
+  bottom: 40px; /* Distance from bottom edge */
+  left: 40px; /* Distance from left edge */
+  top: auto; /* Ensure no top constraint */
+  right: auto; /* Ensure no right constraint */
   display: flex;
   flex-direction: row;
   gap: 10px;
-  z-index: 9999;
-  background: transparent;
+  z-index: 9999; /* High z-index but not excessive */
+  background: transparent; /* Transparent background */
+  padding: 0; /* No padding */
+  border-radius: 0; /* No border radius */
+  border: none; /* No border */
+  box-shadow: none; /* No box shadow */
 }
 
 .add-button {
-  background-color: #ffcc00;
+  background-color: #ffcc00; /* Original color */
   color: #000;
-  font-size: 2rem;
-  border: none;
+  font-size: 2.2rem; /* Original size */
+  border: none; /* No border */
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  z-index: 9999;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  z-index: 1; /* Relative to its fixed parent */
   padding: 0;
   line-height: 1;
 }
 
 .add-button:hover {
   background-color: #e6b800;
-  transform: scale(1.1);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+}
+
+.add-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
 }
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {
+  .page-container {
+    padding-bottom: 70px; /* Adjusted padding for mobile */
+  }
+
   .admin-controls {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    flex-direction: row;
+    bottom: 30px; /* Slightly less padding on mobile */
+    left: 30px; /* Slightly less padding on mobile */
+    top: auto; /* Ensure no top constraint */
+    right: auto; /* Ensure no right constraint */
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    border: none;
   }
 
   .add-button {
-    width: 35px;
-    height: 35px;
-    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: none;
+  }
+
+  .add-button:hover {
+    transform: scale(1.05) rotate(5deg);
   }
 }
 

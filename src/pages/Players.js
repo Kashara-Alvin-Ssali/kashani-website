@@ -1,5 +1,6 @@
 // Players.js
 import React, { useState, useEffect, useContext } from 'react';
+import ReactDOM from 'react-dom';
 import '../css/Players.css';
 import AuthContext from '../context/AuthContext';
 
@@ -117,9 +118,35 @@ const Players = () => {
     <div className="page-container">
       <h2>Our Players</h2>
 
-      {isAdmin && (
-        <div className="admin-controls">
-          <button className="add-button" onClick={() => setShowForm(!showForm)}>
+      {isAdmin && ReactDOM.createPortal(
+        <div 
+          style={{ 
+            position: 'fixed',
+            bottom: '40px',
+            left: '40px',
+            zIndex: 999999,
+            background: '#FF0000',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '5px solid #00FF00'
+          }}
+        >
+          <button 
+            onClick={() => setShowForm(!showForm)}
+            style={{
+              background: '#00FF00',
+              color: '#000',
+              fontSize: '3rem',
+              border: '5px solid #FF0000',
+              borderRadius: '50%',
+              width: '80px',
+              height: '80px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
             {showForm ? '×' : '+'}
           </button>
           {showForm && (
@@ -134,7 +161,8 @@ const Players = () => {
               <button type="submit">{editingPlayerId ? 'Update' : 'Upload'} Player</button>
             </form>
           )}
-        </div>
+        </div>,
+        document.body
       )}
 
       {isLoading ? <p>Loading...</p> : error ? <p>{error}</p> : (
