@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'; // Removed useEffect
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Added Navigate
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'; // Added Navigate and useLocation
 import { ThemeProvider } from './context/ThemeContext';
 import ReactDOM from 'react-dom'; // Add this import
 
@@ -38,9 +38,10 @@ const ProtectedRoute = ({ children, isAdminRoute }) => { // Added isAdminRoute
   return children;
 };
 
-
-function App() {
-  const { isAdmin, token } = useContext(AuthContext); // Access isAdmin and token here
+// Create a wrapper component to access location
+const AppContent = () => {
+  const { isAdmin, token } = useContext(AuthContext);
+  const location = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
@@ -77,7 +78,7 @@ function App() {
         body: form
       });
       if (!res.ok) throw new Error('Upload failed.');
-      await res.json(); // Just await the response, we don't need to store it
+      await res.json();
       resetForm();
     } catch (err) {
       alert(err.message);
@@ -90,99 +91,107 @@ function App() {
     setShowForm(false);
   };
 
+  // Only show admin controls on management and players pages
+  const showAdminControls = isAdmin && (location.pathname === '/management' || location.pathname === '/players');
+
+  return (
+    <div className="App">
+      <Navbar />
+      <main className="content">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/fixtures" element={<Fixtures />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/gallery"
+            element={
+              <ProtectedRoute>
+                <Gallery />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/players"
+            element={
+              <ProtectedRoute isAdminRoute={true}>
+                <Players handleEdit={setEditingId} setShowForm={setShowForm} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/management"
+            element={
+              <ProtectedRoute isAdminRoute={true}>
+                <Management handleEdit={setEditingId} setShowForm={setShowForm} />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Catch-all for undefined routes */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      {showAdminControls && ReactDOM.createPortal(
+        <div 
+          style={{ 
+            position: 'fixed',
+            bottom: '40px',
+            left: '40px',
+            zIndex: 999999,
+            background: '#FF0000',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '5px solid #00FF00'
+          }}
+        >
+          <button 
+            onClick={() => setShowForm(!showForm)}
+            style={{
+              background: '#00FF00',
+              color: '#000',
+              fontSize: '3rem',
+              border: '5px solid #FF0000',
+              borderRadius: '50%',
+              width: '80px',
+              height: '80px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            {showForm ? '×' : '+'}
+          </button>
+          {showForm && (
+            <form className="upload-form" onSubmit={handleSubmit}>
+              <input name="name" value={formData.name} onChange={handleInputChange} placeholder="Name" required />
+              <input name="role" value={formData.role} onChange={handleInputChange} placeholder="Position" required />
+              <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Bio" />
+              <input name="teamImage" type="file" accept="image/*" onChange={handleInputChange} required={!editingId} />
+              <button type="submit">{editingId ? 'Update' : 'Upload'} Member</button>
+            </form>
+          )}
+        </div>,
+        document.body
+      )}
+      <footer>
+        <p>© {new Date().getFullYear()} Kashani Football Team</p>
+      </footer>
+    </div>
+  );
+};
+
+function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="App">
-          <Navbar />
-          <main className="content">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/fixtures" element={<Fixtures />} />
-
-
-              {/* Protected Routes - User needs to be logged in */}
-              <Route
-                path="/gallery"
-                element={
-                  <ProtectedRoute>
-                    <Gallery />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/players"
-                element={
-                  <ProtectedRoute>
-                    <Players />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/management"
-                element={
-                  <ProtectedRoute isAdminRoute={true}>
-                    <Management handleEdit={setEditingId} setShowForm={setShowForm} />
-                  </ProtectedRoute>
-                }
-              />
-              
-              {/* Catch-all for undefined routes or redirect to home */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-          {isAdmin && ReactDOM.createPortal(
-            <div 
-              style={{ 
-                position: 'fixed',
-                bottom: '40px',
-                left: '40px',
-                zIndex: 999999,
-                background: '#FF0000',
-                padding: '20px',
-                borderRadius: '20px',
-                border: '5px solid #00FF00'
-              }}
-            >
-              <button 
-                onClick={() => setShowForm(!showForm)}
-                style={{
-                  background: '#00FF00',
-                  color: '#000',
-                  fontSize: '3rem',
-                  border: '5px solid #FF0000',
-                  borderRadius: '50%',
-                  width: '80px',
-                  height: '80px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                {showForm ? '×' : '+'}
-              </button>
-              {showForm && (
-                <form className="upload-form" onSubmit={handleSubmit}>
-                  <input name="name" value={formData.name} onChange={handleInputChange} placeholder="Name" required />
-                  <input name="role" value={formData.role} onChange={handleInputChange} placeholder="Position" required />
-                  <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Bio" />
-                  <input name="teamImage" type="file" accept="image/*" onChange={handleInputChange} required={!editingId} />
-                  <button type="submit">{editingId ? 'Update' : 'Upload'} Member</button>
-                </form>
-              )}
-            </div>,
-            document.body
-          )}
-          <footer>
-            <p>© {new Date().getFullYear()} Kashani Football Team</p>
-          </footer>
-        </div>
+        <AppContent />
       </Router>
     </ThemeProvider>
   );
