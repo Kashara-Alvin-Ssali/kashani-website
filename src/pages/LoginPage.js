@@ -9,6 +9,7 @@ import AuthContext from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import '../css/LoginPage.css';
+import thrillBg from '../assets/thrill-bg.jpg'; // Import the thrill-bg image
 
 const backendUrl = "https://kashani-backend.onrender.com";
 
@@ -138,7 +139,7 @@ const LoginPage = () => {
         classNames="page-transition"
         unmountOnExit
       >
-        <div className="login-page-container" role="main">
+        <div className="login-page-container" role="main" style={{ backgroundImage: `url(${thrillBg})` }}>
           <button 
             className="theme-toggle animate-scale" 
             onClick={toggleTheme}

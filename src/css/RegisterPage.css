@@ -4,7 +4,10 @@
   align-items: center;
   min-height: calc(100vh - 70px); /* Full height minus navbar */
   padding: 20px;
-  background-color: #1c1c1c; /* Darker background for the page */
+  background-image: url('../assets/thrill-bg.jpg'); /* Use the new background image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #e0e0e0; /* Light text color for the page */
   margin-top: 70px; /* Account for fixed navbar */
   box-sizing: border-box;

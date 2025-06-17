@@ -2,46 +2,45 @@ import React, { useState, useContext, useEffect, useCallback, useMemo } from 're
 import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaEye, FaEyeSlash, FaGoogle, FaFacebook, FaGithub, FaCheck, FaTimes } from 'react-icons/fa';
-import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthContext from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PasswordStrengthIndicator from '../components/PasswordStrengthIndicator';
 import '../css/LoginPage.css';
+import '../css/RegisterPage.css';
+import thrillBg from '../assets/thrill-bg.jpg';
 
 const backendUrl = "https://kashani-backend.onrender.com";
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [touched, setTouched] = useState({
-    username: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+
   const { login } = useContext(AuthContext);
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode /* Removed toggleTheme */ } = useTheme();
   const navigate = useNavigate();
 
-  // Wrap validationRules in useMemo
+  // Add new state for animation
+  const [showContent, setShowContent] = useState(false);
+
+  // Log when component mounts and trigger animation
+  useEffect(() => {
+    setShowContent(true);
+  }, []);
+
+  // Validation rules
   const validationRules = useMemo(() => ({
     username: {
       minLength: 3,
@@ -79,123 +78,131 @@ const RegisterPage = () => {
     return '';
   }, [touched, validationRules]);
 
-  // Handle field blur
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched(prev => ({
-      ...prev,
-      [name]: true
-    }));
-  };
-
-  // Validate form on input change
   useEffect(() => {
-    const { username, email, password, confirmPassword } = formData;
-    const errors = {
-      username: validateField('username', username),
-      email: validateField('email', email),
-      password: validateField('password', password),
-      confirmPassword: touched.confirmPassword && password !== confirmPassword ? 'Passwords do not match' : ''
-    };
+    const newErrors = {};
+    newErrors.username = validateField('username', username);
+    newErrors.email = validateField('email', email);
+    newErrors.password = validateField('password', password);
 
-    setValidationErrors(errors);
+    if (confirmPassword !== password) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    } else {
+      newErrors.confirmPassword = '';
+    }
     
-    setIsFormValid(
-      !Object.values(errors).some(error => error !== '') &&
-      username.trim() !== '' &&
-      email.trim() !== '' &&
-      password.trim() !== '' &&
-      confirmPassword.trim() !== '' &&
-      password === confirmPassword &&
-      acceptedTerms
-    );
-  }, [formData, acceptedTerms, touched, validateField]);
+    if (!acceptTerms) {
+      newErrors.acceptTerms = 'You must accept the terms and conditions';
+    } else {
+      newErrors.acceptTerms = '';
+    }
+
+    setErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every(error => error === '') &&
+                    username.trim() !== '' && 
+                    email.trim() !== '' &&
+                    password.trim() !== '' && 
+                    confirmPassword.trim() !== '' &&
+                    acceptTerms;
+    setIsFormValid(isValid);
+  }, [username, email, password, confirmPassword, acceptTerms, touched, validateField]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { id, value } = e.target;
+    if (id === 'username') setUsername(value);
+    else if (id === 'email') setEmail(value);
+    else if (id === 'password') setPassword(value);
+    else if (id === 'confirmPassword') setConfirmPassword(value);
+
+    setTouched(prev => ({ ...prev, [id]: true }));
+  };
+
+  const handleBlur = (e) => {
+    const { id, value } = e.target;
+    setTouched(prev => ({ ...prev, [id]: true }));
+    // Validate immediately on blur if there's an error
+    if (errors[id]) {
+      const newErrors = { ...errors };
+      if (id === 'username') newErrors.username = validateField('username', value);
+      if (id === 'email') newErrors.email = validateField('email', value);
+      if (id === 'password') newErrors.password = validateField('password', value);
+      if (id === 'confirmPassword') newErrors.confirmPassword = value !== password ? 'Passwords do not match' : '';
+      setErrors(newErrors);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return; // Prevent multiple submissions
-    
+
     setLoading(true);
+    setTouched({ username: true, email: true, password: true, confirmPassword: true, acceptTerms: true });
 
     if (!isFormValid) {
-      toast.error('Please fill in all fields correctly and accept the terms');
+      toast.error('Please fill in all fields correctly and accept terms.');
       setLoading(false);
       return;
     }
 
     try {
-      console.log('Attempting registration with:', { username: formData.username, email: formData.email });
-      
+      console.log('RegisterPage: Attempting registration with username:', username, 'email:', email);
+
       const response = await fetch(`${backendUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
-      console.log('Registration response:', data);
+      console.log('RegisterPage: Registration response:', data);
 
       if (response.ok) {
-        console.log('Registration successful, attempting auto-login...');
-        
-        // Attempt to log in immediately after registration
+        toast.success('Registration successful! Attempting to log in...');
+
+        // Attempt to auto-login after successful registration
         try {
           const loginResponse = await fetch(`${backendUrl}/api/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              username: formData.username,
-              password: formData.password,
-            }),
+            body: JSON.stringify({ username, password }),
           });
 
           const loginData = await loginResponse.json();
-          
+
           if (loginResponse.ok) {
-            // Store username if remember me is checked
             if (rememberMe) {
-              localStorage.setItem('username', formData.username);
+              localStorage.setItem('username', username);
               localStorage.setItem('rememberMe', 'true');
+            } else {
+              localStorage.removeItem('username');
+              localStorage.setItem('rememberMe', 'false');
             }
-            
-            // Log in the user
             login(loginData.user, loginData.token);
-            toast.success('Registration and login successful! Redirecting...');
-            navigate('/', { replace: true });
+            toast.success('Auto-login successful! Redirecting...');
+            navigate('/', { replace: true }); // Redirect to home page
           } else {
-            // If auto-login fails, redirect to login page
-            localStorage.setItem('registeredUsername', formData.username);
-            toast.success('Registration successful! Please log in.');
-            navigate('/login', { replace: true });
+            console.error('RegisterPage: Auto-login failed:', loginData.message);
+            toast.warn('Registration successful, but auto-login failed. Please sign in.');
+            // Store username for pre-filling login page
+            localStorage.setItem('registeredUsername', username);
+            navigate('/login'); // Redirect to login page
           }
-        } catch (loginErr) {
-          console.error('Auto-login failed:', loginErr);
-          localStorage.setItem('registeredUsername', formData.username);
-          toast.success('Registration successful! Please log in.');
-          navigate('/login', { replace: true });
+        } catch (autoLoginErr) {
+          console.error('RegisterPage: Auto-login API error:', autoLoginErr);
+          toast.warn('Registration successful, but an error occurred during auto-login. Please sign in.');
+          localStorage.setItem('registeredUsername', username);
+          navigate('/login'); // Redirect to login page
         }
       } else {
-        console.error('Registration failed:', data.message);
+        console.error('RegisterPage: Registration failed:', data.message);
         toast.error(data.message || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      console.error('Registration API error:', err);
+      console.error('RegisterPage: Registration API error:', err);
       toast.error('An error occurred during registration. Please try again.');
     } finally {
       setLoading(false);
@@ -204,15 +211,13 @@ const RegisterPage = () => {
 
   const handleSocialLogin = async (provider) => {
     if (loading) return; // Prevent multiple clicks
-    
     setLoading(true);
     try {
       const response = await fetch(`${backendUrl}/api/auth/${provider.toLowerCase()}/auth-url`);
       const data = await response.json();
-      
+
       if (response.ok) {
-        // Store current page in sessionStorage to return after social login
-        sessionStorage.setItem('returnTo', '/');
+        sessionStorage.setItem('returnTo', '/'); // Store current page to return after social login
         window.location.href = data.url;
       } else {
         toast.error(`Failed to initialize ${provider} login`);
@@ -226,238 +231,238 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="login-page-container" role="main">
-      <button 
-        className="theme-toggle" 
-        onClick={toggleTheme}
-        aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-        disabled={loading}
+    <TransitionGroup>
+      <CSSTransition
+        in={showContent}
+        timeout={300}
+        classNames="page-transition"
+        unmountOnExit
       >
-        {isDarkMode ? <MdLightMode /> : <MdDarkMode />}
-      </button>
-      
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={isDarkMode ? "dark" : "light"}
-      />
-      
-      <div className="login-form-container animate-fade-in">
-        <h2 className="animate-slide-down">Create Account</h2>
-        <form onSubmit={handleSubmit} noValidate className="animate-fade-in">
-          <div className="form-group animate-slide-up">
-            <label htmlFor="username">Username</label>
-            <div className="input-with-validation">
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Choose a username"
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-invalid={!!validationErrors.username}
-                className={validationErrors.username ? 'error' : ''}
-              />
-              {formData.username && touched.username && (
-                <span className="validation-icon">
-                  {validationErrors.username ? <FaTimes className="error-icon" /> : <FaCheck className="success-icon" />}
-                </span>
-              )}
-            </div>
-            {validationErrors.username && touched.username && (
-              <span className="error-message animate-fade-in">{validationErrors.username}</span>
-            )}
-          </div>
-
-          <div className="form-group animate-slide-up">
-            <label htmlFor="email">Email</label>
-            <div className="input-with-validation">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter your email"
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-invalid={!!validationErrors.email}
-                className={validationErrors.email ? 'error' : ''}
-              />
-              {formData.email && touched.email && (
-                <span className="validation-icon">
-                  {validationErrors.email ? <FaTimes className="error-icon" /> : <FaCheck className="success-icon" />}
-                </span>
-              )}
-            </div>
-            {validationErrors.email && touched.email && (
-              <span className="error-message animate-fade-in">{validationErrors.email}</span>
-            )}
-          </div>
-
-          <div className="form-group animate-slide-up">
-            <label htmlFor="password">Password</label>
-            <div className="password-input-container">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Create a password"
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-invalid={!!validationErrors.password}
-                className={validationErrors.password ? 'error' : ''}
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-                tabIndex="-1"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {formData.password && touched.password && (
-              <PasswordStrengthIndicator password={formData.password} />
-            )}
-            {validationErrors.password && touched.password && (
-              <span className="error-message animate-fade-in">{validationErrors.password}</span>
-            )}
-          </div>
-
-          <div className="form-group animate-slide-up">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <div className="password-input-container">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Confirm your password"
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-invalid={!!validationErrors.confirmPassword}
-                className={validationErrors.confirmPassword ? 'error' : ''}
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                tabIndex="-1"
-                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-              >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {validationErrors.confirmPassword && touched.confirmPassword && (
-              <span className="error-message animate-fade-in">{validationErrors.confirmPassword}</span>
-            )}
-          </div>
-
-          <div className="form-group terms-group animate-slide-up">
-            <label className="terms-label">
-              <input
-                type="checkbox"
-                checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
-                disabled={loading}
-                aria-required="true"
-              />
-              <span>
-                I accept the{' '}
-                <Link to="/terms" className="terms-link" target="_blank" tabIndex={loading ? -1 : 0}>
-                  Terms and Conditions
-                </Link>
-                {' '}and{' '}
-                <Link to="/privacy" className="terms-link" target="_blank" tabIndex={loading ? -1 : 0}>
-                  Privacy Policy
-                </Link>
-              </span>
-            </label>
-          </div>
-
-          <div className="form-options animate-fade-in">
-            <label className="remember-me">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                disabled={loading}
-                aria-label="Remember me"
-              />
-              <span>Remember me</span>
-            </label>
-          </div>
-
-          <button 
-            type="submit" 
-            className="login-button animate-slide-up" 
-            disabled={loading || !isFormValid}
-            aria-busy={loading}
+        <div className="register-page-container" role="main" style={{ backgroundImage: `url(${thrillBg})` }}>
+          {/* Theme toggle removed from here as per image design */}
+          {/* <button 
+            className="theme-toggle animate-scale" 
+            onClick={toggleTheme}
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            disabled={loading}
           >
-            {loading ? <LoadingSpinner /> : 'Create Account'}
-          </button>
-        </form>
+            {isDarkMode ? <MdLightMode /> : <MdDarkMode />}
+          </button> */}
+          {/* Hero section content also removed from here */}
+          {/* <div className="hero-section" style={{ backgroundImage: `url(${goldPattern})` }}>
+            <h2 className="animate-slide-down">Do you want to own and store gold in Switzerland?</h2>
+            <p className="animate-fade-in">
+              TaurusGold is the most cost effective way to buy, sell hold and transfer
+              gold internationally. Find out how it works now.
+            </p>
+            <div className="hero-buttons">
+              <Link to="/register" className="hero-button primary animate-scale" tabIndex={loading ? -1 : 0}>
+                Create Account
+              </Link>
+              <Link to="/login" className="hero-button secondary animate-scale" tabIndex={loading ? -1 : 0}>
+                Login
+              </Link>
+            </div>
+          </div> */}
 
-        <div className="social-login animate-fade-in">
-          <p>Or sign up with</p>
-          <div className="social-buttons">
-            <button
-              type="button"
-              className="social-button google animate-scale"
-              onClick={() => handleSocialLogin('Google')}
-              disabled={loading}
-              aria-label="Sign up with Google"
-            >
-              <FaGoogle />
-            </button>
-            <button
-              type="button"
-              className="social-button facebook animate-scale"
-              onClick={() => handleSocialLogin('Facebook')}
-              disabled={loading}
-              aria-label="Sign up with Facebook"
-            >
-              <FaFacebook />
-            </button>
-            <button
-              type="button"
-              className="social-button github animate-scale"
-              onClick={() => handleSocialLogin('GitHub')}
-              disabled={loading}
-              aria-label="Sign up with GitHub"
-            >
-              <FaGithub />
-            </button>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme={isDarkMode ? "dark" : "light"}
+          />
+
+          <div className="register-form-container">
+            <h2 className="animate-slide-down">Create Account</h2>
+            <form onSubmit={handleSubmit} noValidate className="animate-fade-in">
+              <div className="form-group animate-slide-up">
+                <label htmlFor="username">Username</label>
+                <div className="input-with-validation">
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Choose a username" /* Changed placeholder back */
+                    required
+                    disabled={loading}
+                    aria-required="true"
+                    aria-invalid={!!errors.username}
+                  />
+                  {errors.username && touched.username && <span className="error-message">{errors.username}</span>}
+                  {touched.username && !errors.username && username.length > 0 && <span className="success-icon"><FaCheck /></span>}
+                  {touched.username && errors.username && <span className="error-icon"><FaTimes /></span>}
+                </div>
+              </div>
+
+              <div className="form-group animate-slide-up">
+                <label htmlFor="email">Email</label>
+                <div className="input-with-validation">
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Enter your email"
+                    required
+                    disabled={loading}
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                  />
+                  {errors.email && touched.email && <span className="error-message">{errors.email}</span>}
+                  {touched.email && !errors.email && email.length > 0 && <span className="success-icon"><FaCheck /></span>}
+                  {touched.email && errors.email && <span className="error-icon"><FaTimes /></span>}
+                </div>
+              </div>
+
+              <div className="form-group animate-slide-up">
+                <label htmlFor="password">Password</label>
+                <div className="password-input-container">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Create a password" /* Changed placeholder back */
+                    required
+                    disabled={loading}
+                    aria-required="true"
+                    aria-invalid={!!errors.password}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle" /* Changed class back */
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex="-1"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    // disabled={loading} /* Removed disabled, as it's handled by form */
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                {touched.password && <PasswordStrengthIndicator password={password} />}
+              </div>
+
+              <div className="form-group animate-slide-up">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <div className="input-with-validation">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Confirm your password"
+                    required
+                    disabled={loading}
+                    aria-required="true"
+                    aria-invalid={!!errors.confirmPassword}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle" /* Changed class back */
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    tabIndex="-1"
+                    aria-label={showConfirmPassword ? "Hide password" : "Show confirm password"}
+                    // disabled={loading} /* Removed disabled, as it's handled by form */
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                {errors.confirmPassword && touched.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+                {touched.confirmPassword && !errors.confirmPassword && confirmPassword.length > 0 && <span className="success-icon"><FaCheck /></span>}
+                {touched.confirmPassword && errors.confirmPassword && <span className="error-icon"><FaTimes /></span>}
+              </div>
+
+              <div className="form-group terms-group animate-slide-up"> {/* Restored original terms-group structure */}
+                <label className="terms-label">
+                  <input
+                    type="checkbox"
+                    checked={acceptTerms}
+                    onChange={(e) => setAcceptTerms(e.target.checked)}
+                    disabled={loading}
+                    aria-required="true"
+                    aria-invalid={!!errors.acceptTerms}
+                  />
+                  <span>
+                    I accept the <Link to="/terms" className="terms-link" target="_blank" tabIndex={loading ? -1 : 0}>Terms and Conditions</Link>
+                  </span>
+                </label>
+                {errors.acceptTerms && touched.acceptTerms && <span className="error-message">{errors.acceptTerms}</span>}
+              </div>
+              
+              <div className="form-options animate-fade-in"> {/* Restored original form-options structure */}
+                <label className="remember-me">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    disabled={loading}
+                    aria-label="Remember me"
+                  />
+                  <span>Remember me</span>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="register-button animate-slide-up" /* Changed class back to register-button */
+                disabled={loading || !isFormValid}
+                aria-busy={loading}
+              >
+                {loading ? <LoadingSpinner /> : 'Create Account'}
+              </button>
+            </form>
+
+            <div className="social-login animate-fade-in"> {/* Restored original social-login structure */}
+              <p>Or sign up with</p> /* Changed text back */
+              <div className="social-buttons">
+                <button
+                  type="button"
+                  className="social-button google"
+                  onClick={() => handleSocialLogin('Google')}
+                  disabled={loading}
+                  aria-label="Sign up with Google" /* Changed aria-label back */
+                >
+                  <FaGoogle />
+                </button>
+                <button
+                  type="button"
+                  className="social-button facebook"
+                  onClick={() => handleSocialLogin('Facebook')}
+                  disabled={loading}
+                  aria-label="Sign up with Facebook" /* Changed aria-label back */
+                >
+                  <FaFacebook />
+                </button>
+                <button
+                  type="button"
+                  className="social-button github"
+                  onClick={() => handleSocialLogin('GitHub')}
+                  disabled={loading}
+                  aria-label="Sign up with GitHub" /* Changed aria-label back */
+                >
+                  <FaGithub />
+                </button>
+              </div>
+            </div>
+
+            <p className="register-link animate-fade-in"> {/* Restored original register-link structure */}
+              Already have an account? <Link to="/login" className="login-link" tabIndex={loading ? -1 : 0}>Sign in here</Link> {/* Changed text and class back */}
+            </p>
           </div>
         </div>
-
-        <p className="register-link animate-fade-in">
-          Already have an account? <Link to="/login" className="login-link" tabIndex={loading ? -1 : 0}>Sign in here</Link>
-        </p>
-      </div>
-    </div>
+      </CSSTransition>
+    </TransitionGroup>
   );
 };
 

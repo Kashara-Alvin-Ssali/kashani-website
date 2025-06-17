@@ -16,6 +16,7 @@
   --transition-speed: 0.3s;
   --border-color: #ddd;
   --card-background: #fff;
+  --page-background-image: url('../assets/thrill-bg.jpg');
 }
 
 [data-theme="dark"] {
@@ -31,6 +32,7 @@
   --hover-shadow: rgba(0, 0, 0, 0.4);
   --border-color: #444;
   --card-background: #2d2d2d;
+  --page-background-image: url('../assets/thrill-bg.jpg');
 }
 
 .login-page-container {
@@ -38,7 +40,10 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: var(--primary-gradient);
+  background-image: var(--page-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 1rem;
   position: relative;
   transition: background var(--transition-speed) ease;
