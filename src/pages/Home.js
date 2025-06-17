@@ -2,14 +2,10 @@
 import React from 'react';
 import '../css/Home.css'; // Make sure this path is correct
 
-// Import your background image from src/assets
+// Import your background images from src/assets
 import thrillBg from '../assets/thrill-bg.jpg';
-
-// Import the image for the "Dominant Win" card
 import domiImage from '../assets/domii.jpg';
-
-// Import the new image for the "Player Spotlight" card
-import sadicImage from '../assets/sadic.jpg'; // <--- ADDED THIS LINE
+import sadicImage from '../assets/sadic.jpg';
 
 const Home = () => {
   return (
@@ -37,8 +33,6 @@ const Home = () => {
               <a href="/news/1" className="card-link">Read Full Report →</a>
             </div>
           </div>
-
-
 
           {/* Example Player Spotlight Card */}
           <div className="highlight-card">
@@ -93,7 +87,6 @@ const Home = () => {
           <a href="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" target="_blank" rel="noopener noreferrer" className="social-icon youtube">YouTube</a>
         </div>
       </section>
-
     </div>
   );
 };

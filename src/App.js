@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react'; // Removed useEffect
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'; // Added Navigate and useLocation
 import { ThemeProvider } from './context/ThemeContext';
-import ReactDOM from 'react-dom'; // Add this import
+import ReactDOM from 'react-dom'; // Re-import ReactDOM
+import Chatbot from './components/Chatbot'; // Import Chatbot component
 
 import './css/App.css';
 import Navbar from './components/navbar';
@@ -18,7 +19,7 @@ import Gallery from './pages/Gallery';
 import LoginPage from './pages/LoginPage'; // Import LoginPage
 import RegisterPage from './pages/RegisterPage'; // Import RegisterPage
 
-import AuthContext from './context/AuthContext'; // Import AuthContext
+import AuthContext, { AuthProvider } from './context/AuthContext'; // Corrected import for AuthProvider
 
 // A simple protected route component
 const ProtectedRoute = ({ children, isAdminRoute }) => { // Added isAdminRoute
@@ -248,9 +249,7 @@ const AppContent = () => {
               <input 
                 name="teamImage" 
                 type="file" 
-                accept="image/*" 
                 onChange={handleInputChange} 
-                required={!editingId}
                 style={{
                   width: '100%',
                   padding: '10px',
@@ -262,37 +261,24 @@ const AppContent = () => {
                 }}
               />
               <button 
-                type="submit"
+                type="submit" 
                 style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '5px',
-                  border: 'none',
                   background: '#ffcc00',
                   color: '#000',
-                  fontWeight: 'bold',
+                  padding: '10px 20px',
+                  borderRadius: '5px',
+                  border: 'none',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = '#e6b800';
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = '#ffcc00';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  width: '100%'
                 }}
               >
-                {editingId ? 'Update' : 'Upload'} Member
+                {editingId ? 'Update' : 'Add'} Team Member
               </button>
             </form>
           )}
-        </div>,
-        document.body
+        </div>
       )}
-      <footer>
-        <p>© {new Date().getFullYear()} Kashani Football Team</p>
-      </footer>
+      {location.pathname !== '/contact' && <Chatbot />}
     </div>
   );
 };
@@ -300,9 +286,11 @@ const AppContent = () => {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

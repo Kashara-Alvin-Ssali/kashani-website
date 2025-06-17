@@ -248,36 +248,42 @@
 }
 
 .social-icon:hover {
-  background-color: #FFD700;
-  color: #1a1a1a;
-  transform: translateY(-5px);
+  background-color: rgba(61, 61, 61, 0.9);
+  transform: translateY(-3px);
+  color: #FFEA00;
 }
 
-/* Responsive adjustments for Home page */
+/* Mobile responsiveness for Home page sections */
 @media (max-width: 768px) {
   .hero-section {
     padding: 80px 15px;
     min-height: 400px;
   }
+
   .hero-section h1 {
     font-size: 3em;
   }
+
   .hero-section p {
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
+
   .cta-button {
     padding: 15px 30px;
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
+
   .highlights-section,
   .standings-overview-section,
   .social-feed-section {
-    margin: 30px auto;
     padding: 20px;
+    margin: 30px auto;
   }
+
   .section-header h2 {
     font-size: 2em;
   }
+
   .highlight-grid {
     grid-template-columns: 1fr;
   }
