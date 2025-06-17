@@ -47,6 +47,8 @@
   padding: 1rem;
   position: relative;
   transition: background var(--transition-speed) ease;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .theme-toggle {
@@ -67,10 +69,10 @@
 }
 
 .login-form-container {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.1);
   padding: 2.5rem;
   border-radius: 16px;
-  box-shadow: 0 8px 32px var(--shadow-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 420px;
   backdrop-filter: blur(10px);
@@ -98,7 +100,7 @@
 .login-form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--text-color);
+  color: #FFFFFF;
   font-size: 2rem;
   font-weight: 600;
   position: relative;
@@ -124,7 +126,7 @@
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
+  color: #FFFFFF;
   font-weight: 500;
   font-size: 0.95rem;
   transition: color var(--transition-speed) ease;
@@ -141,10 +143,10 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--text-color);
+  color: #FFFFFF;
   cursor: pointer;
   padding: 4px;
-  opacity: 0.7;
+  opacity: 0.9;
   transition: opacity var(--transition-speed) ease;
 }
 
@@ -155,23 +157,23 @@
 .form-group input {
   width: 100%;
   padding: 0.9rem 1rem;
-  border: 2px solid var(--input-border);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   font-size: 1rem;
   transition: all var(--transition-speed) ease;
-  background: var(--input-background);
-  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: var(--primary-color);
-  background: var(--background-color);
+  background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.1);
 }
 
 .form-group input::placeholder {
-  color: #95a5a6;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .form-options {
@@ -185,7 +187,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-color);
+  color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -243,7 +245,7 @@
 }
 
 .error-message {
-  color: #FF6B6B; /* Brighter red for errors on dark theme */
+  color: #FF6B6B;
   background-color: rgba(255, 107, 107, 0.1);
   border: 1px solid #FF6B6B;
   padding: 10px;
@@ -259,7 +261,7 @@
 }
 
 .social-login p {
-  color: var(--text-color);
+  color: #FFFFFF;
   margin-bottom: 1rem;
   position: relative;
 }
@@ -271,7 +273,7 @@
   top: 50%;
   width: 30%;
   height: 1px;
-  background: var(--input-border);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .social-login p::before {
@@ -327,7 +329,7 @@
 .register-link {
   text-align: center;
   margin-top: 1.5rem;
-  color: var(--text-color);
+  color: #FFFFFF;
   font-size: 0.95rem;
 }
 
@@ -372,6 +374,8 @@
   border-radius: 8px;
   padding: 16px;
   font-size: 0.95rem;
+  background: rgba(42, 42, 42, 0.9);
+  color: #FFFFFF;
 }
 
 .Toastify__toast--success {
@@ -822,4 +826,13 @@ input.error {
   40%, 60% {
     transform: translateX(4px);
   }
+}
+
+/* Password Strength Indicator */
+.strength-bar {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.strength-text {
+  color: #FFFFFF;
 }

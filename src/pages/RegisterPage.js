@@ -290,7 +290,7 @@ const RegisterPage = () => {
                     value={username}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Choose a username" /* Changed placeholder back */
+                    placeholder="Choose a username"
                     required
                     disabled={loading}
                     aria-required="true"
@@ -332,7 +332,7 @@ const RegisterPage = () => {
                     value={password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Create a password" /* Changed placeholder back */
+                    placeholder="Create a password"
                     required
                     disabled={loading}
                     aria-required="true"
@@ -340,11 +340,10 @@ const RegisterPage = () => {
                   />
                   <button
                     type="button"
-                    className="password-toggle" /* Changed class back */
+                    className="password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex="-1"
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    // disabled={loading} /* Removed disabled, as it's handled by form */
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -369,11 +368,10 @@ const RegisterPage = () => {
                   />
                   <button
                     type="button"
-                    className="password-toggle" /* Changed class back */
+                    className="password-toggle"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     tabIndex="-1"
                     aria-label={showConfirmPassword ? "Hide password" : "Show confirm password"}
-                    // disabled={loading} /* Removed disabled, as it's handled by form */
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -383,7 +381,7 @@ const RegisterPage = () => {
                 {touched.confirmPassword && errors.confirmPassword && <span className="error-icon"><FaTimes /></span>}
               </div>
 
-              <div className="form-group terms-group animate-slide-up"> {/* Restored original terms-group structure */}
+              <div className="form-group terms-group animate-slide-up">
                 <label className="terms-label">
                   <input
                     type="checkbox"
@@ -400,7 +398,7 @@ const RegisterPage = () => {
                 {errors.acceptTerms && touched.acceptTerms && <span className="error-message">{errors.acceptTerms}</span>}
               </div>
               
-              <div className="form-options animate-fade-in"> {/* Restored original form-options structure */}
+              <div className="form-options animate-fade-in">
                 <label className="remember-me">
                   <input
                     type="checkbox"
@@ -415,7 +413,7 @@ const RegisterPage = () => {
 
               <button
                 type="submit"
-                className="register-button animate-slide-up" /* Changed class back to register-button */
+                className="register-button animate-slide-up"
                 disabled={loading || !isFormValid}
                 aria-busy={loading}
               >
@@ -423,15 +421,15 @@ const RegisterPage = () => {
               </button>
             </form>
 
-            <div className="social-login animate-fade-in"> {/* Restored original social-login structure */}
-              <p>Or sign up with</p> /* Changed text back */
+            <div className="social-login animate-fade-in">
+              <p>Or sign up with</p>
               <div className="social-buttons">
                 <button
                   type="button"
                   className="social-button google"
                   onClick={() => handleSocialLogin('Google')}
                   disabled={loading}
-                  aria-label="Sign up with Google" /* Changed aria-label back */
+                  aria-label="Sign up with Google"
                 >
                   <FaGoogle />
                 </button>
@@ -440,7 +438,7 @@ const RegisterPage = () => {
                   className="social-button facebook"
                   onClick={() => handleSocialLogin('Facebook')}
                   disabled={loading}
-                  aria-label="Sign up with Facebook" /* Changed aria-label back */
+                  aria-label="Sign up with Facebook"
                 >
                   <FaFacebook />
                 </button>
@@ -449,15 +447,15 @@ const RegisterPage = () => {
                   className="social-button github"
                   onClick={() => handleSocialLogin('GitHub')}
                   disabled={loading}
-                  aria-label="Sign up with GitHub" /* Changed aria-label back */
+                  aria-label="Sign up with GitHub"
                 >
                   <FaGithub />
                 </button>
               </div>
             </div>
 
-            <p className="register-link animate-fade-in"> {/* Restored original register-link structure */}
-              Already have an account? <Link to="/login" className="login-link" tabIndex={loading ? -1 : 0}>Sign in here</Link> {/* Changed text and class back */}
+            <p className="register-link animate-fade-in">
+              Already have an account? <Link to="/login" className="login-link" tabIndex={loading ? -1 : 0}>Sign in here</Link>
             </p>
           </div>
         </div>

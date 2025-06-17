@@ -8,16 +8,17 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: #e0e0e0; /* Light text color for the page */
+  color: #ffffff; /* Changed to pure white for better visibility */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Added subtle text shadow */
   margin-top: 70px; /* Account for fixed navbar */
   box-sizing: border-box;
 }
 
 .register-form-container {
-  background-color: #2a2a2a; /* Slightly lighter dark shade for form */
+  background-color: rgba(42, 42, 42, 0.8); /* Slightly lighter dark shade for form with transparency */
   padding: 30px 40px;
   border-radius: 8px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7); /* More pronounced shadow */
   width: 100%;
   max-width: 420px;
   text-align: center;
@@ -39,7 +40,7 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #FFD700; /* Gold color for labels */
+  color: #FFFFFF; /* Changed label color to white */
   font-weight: 500;
 }
 
@@ -47,7 +48,7 @@
 .form-group input[type="password"] {
   width: 100%;
   padding: 12px;
-  background-color: #333333; /* Dark input background */
+  background-color: rgba(51, 51, 51, 0.7); /* Dark input background with transparency */
   color: #e0e0e0; /* Light text in input */
   border: 1px solid #555555; /* Darker border */
   border-radius: 4px;
@@ -111,7 +112,7 @@
 .login-link {
   margin-top: 20px;
   font-size: 14px;
-  color: #cccccc; /* Lighter grey for link text */
+  color: #ffffff; /* Changed to pure white for better visibility */
 }
 
 .login-link a {
